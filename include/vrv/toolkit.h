@@ -17,13 +17,25 @@
 
 //----------------------------------------------------------------------------
 
-#ifdef USE_EMSCRIPTEN
-#include "jsonxx.h"
-#endif
-
 namespace vrv {
 
-enum FileFormat { UNKNOWN = 0, AUTO, MEI, HUMDRUM, PAE, DARMS, MUSICXML, MUSICXMLHUM, MEIHUM, ESAC, MIDI, TIMEMAP };
+class EditorToolkit;
+
+enum FileFormat {
+    UNKNOWN = 0,
+    AUTO,
+    MEI,
+    HUMDRUM,
+    PAE,
+    ABC,
+    DARMS,
+    MUSICXML,
+    MUSICXMLHUM,
+    MEIHUM,
+    ESAC,
+    MIDI,
+    TIMEMAP
+};
 
 //----------------------------------------------------------------------------
 // Toolkit
@@ -89,6 +101,8 @@ public:
      * Only available for Emscripten-based compiles
      **/
     bool Edit(const std::string &json_editorAction);
+
+    std::string EditInfo();
 
     /**
      * Concatenates the vrv::logBuffer into a string an returns it.
@@ -253,15 +267,6 @@ public:
     ///@}
 
     /**
-     * Experimental editor methods
-     */
-    ///@{
-    bool Drag(std::string elementId, int x, int y);
-    bool Insert(std::string elementType, std::string startId, std::string endId);
-    bool Set(std::string elementId, std::string attrType, std::string attrValue);
-    ///@}
-
-    /**
      * @name Set and get a std::string into a char * buffer.
      * This is used for returning a string buffer to emscripten.
      * The buffer is freed when reset or in MusController destructor.
@@ -274,18 +279,6 @@ public:
 private:
     bool IsUTF16(const std::string &filename);
     bool LoadUTF16File(const std::string &filename);
-
-protected:
-#ifdef USE_EMSCRIPTEN
-    /**
-     * Experimental editor methods
-     */
-    ///@{
-    bool ParseDragAction(jsonxx::Object param, std::string *elementId, int *x, int *y);
-    bool ParseInsertAction(jsonxx::Object param, std::string *elementType, std::string *startid, std::string *endid);
-    bool ParseSetAction(jsonxx::Object param, std::string *elementId, std::string *attrType, std::string *attrValue);
-///@}
-#endif
 
 public:
     //
@@ -305,6 +298,8 @@ private:
      * The C buffer string.
      */
     char *m_cString;
+
+    EditorToolkit *m_editorToolkit;
 };
 
 } // namespace vrv

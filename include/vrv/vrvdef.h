@@ -17,6 +17,16 @@
 
 #include "attdef.h"
 
+//----------------------------------------------------------------------------
+
+#define _USE_MATH_DEFINES // needed by Windows for math constants like "M_PI"
+#include <math.h>
+
+// In case it is not defined before...
+#ifndef M_PI
+#define M_PI (3.14159265358979323846264338327950288)
+#endif
+
 namespace vrv {
 
 //----------------------------------------------------------------------------
@@ -24,12 +34,19 @@ namespace vrv {
 //----------------------------------------------------------------------------
 
 #define VERSION_MAJOR 2
-#define VERSION_MINOR 0
-#define VERSION_REVISION 2
+#define VERSION_MINOR 2
+#define VERSION_REVISION 1
 // Adds "-dev" in the version number - should be set to false for releases
 #define VERSION_DEV false
 
 enum MEIVersion { MEI_UNDEFINED = 0, MEI_2013, MEI_3_0_0, MEI_4_0_0 };
+
+//----------------------------------------------------------------------------
+// Default midi values
+//----------------------------------------------------------------------------
+
+#define MIDI_VELOCITY 90
+#define MIDI_TEMPO 120
 
 //----------------------------------------------------------------------------
 // Object defines
@@ -48,11 +65,13 @@ enum ClassId {
     DEVICE_CONTEXT, // Should not be instanciated as is,
     FLOATING_OBJECT,
     FLOATING_POSITIONER,
+    FLOATING_CURVE_POSITIONER,
     // Ids for ungrouped objects
     ALIGNMENT,
     ALIGNMENT_REFERENCE,
     CLEF_ATTR,
     DOC,
+    FACSIMILE,
     FB,
     GRACE_ALIGNER,
     INSTRDEF,
@@ -71,11 +90,13 @@ enum ClassId {
     STAFF,
     STAFF_ALIGNMENT,
     STAFFGRP,
+    SURFACE,
     SVG,
     SYSTEM,
     SYSTEM_ALIGNER,
     SYSTEM_ALIGNMENT,
     TIMESTAMP_ALIGNER,
+    ZONE,
     // Ids for EditorialElement child classes
     EDITORIAL_ELEMENT,
     ABBR,
@@ -145,7 +166,6 @@ enum ClassId {
     BARLINE_ATTR_RIGHT,
     BEAM,
     BEATRPT,
-    BRACKET,
     BTREM,
     CHORD,
     CLEF,
@@ -154,8 +174,10 @@ enum ClassId {
     DOTS,
     FLAG,
     FTREM,
+    GRACEGRP,
     HALFMRPT,
     KEYSIG,
+    KEYACCID,
     LIGATURE,
     MENSUR,
     METERSIG,
@@ -167,7 +189,6 @@ enum ClassId {
     NC,
     NOTE,
     NEUME,
-    TUPLET_NUM,
     PROPORT,
     REST,
     SPACE,
@@ -176,6 +197,8 @@ enum ClassId {
     SYLLABLE,
     TIMESTAMP_ATTR,
     TUPLET,
+    TUPLET_BRACKET,
+    TUPLET_NUM,
     VERSE,
     LAYER_ELEMENT_max,
     // Ids for ScoreDefElement child classes
@@ -210,6 +233,7 @@ enum InterfaceId {
     INTERFACE_BOUNDARY,
     INTERFACE_DURATION,
     INTERFACE_LINKING,
+    INTERFACE_FACSIMILE,
     INTERFACE_PITCH,
     INTERFACE_PLIST,
     INTERFACE_POSITION,
@@ -225,10 +249,11 @@ enum InterfaceId {
 
 class Alignment;
 class Arpeg;
-class AttComparison;
+class ClassIdComparison;
 class BeamElementCoord;
 class BoundingBox;
 class Comparison;
+class CurveSpannedElement;
 class FloatingPositioner;
 class GraceAligner;
 class InterfaceComparison;
@@ -249,8 +274,6 @@ class TimeSpanningInterface;
 
 typedef std::vector<Object *> ArrayOfObjects;
 
-typedef std::vector<Object *> ListOfObjects;
-
 typedef std::vector<Comparison *> ArrayOfComparisons;
 
 typedef std::vector<Note *> ChordCluster;
@@ -260,14 +283,14 @@ typedef std::vector<std::tuple<Alignment *, Alignment *, int> > ArrayOfAdjustmen
 typedef std::vector<std::tuple<Alignment *, Arpeg *, int, bool> > ArrayOfAligmentArpegTuples;
 
 typedef std::vector<BeamElementCoord *> ArrayOfBeamElementCoords;
-    
+
 typedef std::vector<std::pair<int, int> > ArrayOfIntPairs;
 
 typedef std::vector<std::pair<LinkingInterface *, std::string> > ArrayOfLinkingInterfaceUuidPairs;
 
 typedef std::vector<std::pair<PlistInterface *, std::string> > ArrayOfPlistInterfaceUuidPairs;
 
-typedef std::vector<std::pair<LayerElement *, Point> > ArrayOfLayerElementPointPairs;
+typedef std::vector<CurveSpannedElement *> ArrayOfCurveSpannedElements;
 
 typedef std::vector<std::pair<Object *, data_MEASUREBEAT> > ArrayOfObjectBeatPairs;
 
@@ -287,7 +310,11 @@ typedef std::map<Staff *, std::list<int> > MapOfDotLocs;
 
 typedef std::map<std::string, Option *> MapOfStrOptions;
 
+typedef std::map<data_PITCHNAME, data_ACCIDENTAL_WRITTEN> MapOfPitchAccid;
+
 typedef std::map<int, GraceAligner *> MapOfIntGraceAligners;
+
+typedef std::vector<std::pair<std::wstring, bool> > ArrayOfStringDynamTypePairs;
 
 /**
  * Generic int map recursive structure for storing hierachy of values
@@ -376,10 +403,25 @@ enum FunctorCode { FUNCTOR_CONTINUE = 0, FUNCTOR_SIBLINGS, FUNCTOR_STOP };
 #define VRV_TEXT_E551 0xE551
 #define VRV_TEXT_E552 0xE552
 
+/**
+ * SMUFL Symbols used in figured bass included in VerovioText
+ * Text accidentals (266D to 266F)
+ * SMuFL accidentals (E260 to E264)
+ * SMuFL figured-bass figures (EA50 to EA62)
+ * SMuFL figured-bass supplement (ECC0)
+ */
+
+#define VRV_TEXT_HARM                                                                                                  \
+    L"\u266D\u266E\u266F"                                                                                              \
+    L"\uE260\uE261\uE262\uE263\uE264"                                                                                  \
+    L"\uEA50\uEA51\uEA52\uEA53\uEA54\uEA55\uEA56\uEA57\uEA58\uEA59\uEA5A\uEA5B\uEA5C\uEA5D\uEA5E"                      \
+    L"\uEA5F\uEA60\uEA61\uEA62"                                                                                        \
+    L"\uECC0"
+
 //----------------------------------------------------------------------------
 // data.LINEWIDTHTERM factors
 //----------------------------------------------------------------------------
-    
+
 #define LINEWIDTHTERM_factor_narrow 0.5
 #define LINEWIDTHTERM_factor_medium 2.0
 #define LINEWIDTHTERM_factor_wide 4.0
@@ -468,6 +510,18 @@ enum {
 };
 
 //----------------------------------------------------------------------------
+// Bounding box access
+//----------------------------------------------------------------------------
+
+enum Accessor { SELF = 0, CONTENT };
+
+//----------------------------------------------------------------------------
+// Some keys
+//----------------------------------------------------------------------------
+
+enum { KEY_LEFT = 37, KEY_UP = 38, KEY_RIGHT = 39, KEY_DOWN = 40 };
+
+//----------------------------------------------------------------------------
 // Legacy Wolfgang defines
 //----------------------------------------------------------------------------
 
@@ -475,6 +529,10 @@ enum {
 
 // in half staff spaces (but should be 6 in two-voice notation)
 #define STANDARD_STEMLENGTH 7
+
+#define SUPER_SCRIPT_FACTOR 0.58
+#define SUPER_SCRIPT_POSITION -0.20 // lowered down from the midline
+#define SUB_SCRIPT_POSITION -0.17 // lowered down from the baseline
 
 } // namespace vrv
 

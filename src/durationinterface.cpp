@@ -69,7 +69,7 @@ double DurationInterface::GetInterfaceAlignmentDuration(int num, int numbase)
     if (this->HasNumbase()) numbase *= this->GetNumbase();
 
     double duration = DUR_MAX / pow(2.0, (double)(noteDur - 2.0)) * numbase / num;
-    
+
     int noteDots = (this->HasDotsGes()) ? this->GetDotsGes() : this->GetDots();
     if (noteDots != -1) {
         duration = 2 * duration - (duration / pow(2, noteDots));
@@ -118,8 +118,8 @@ bool DurationInterface::IsFirstInBeam(LayerElement *noteOrRest)
     if (!beam) {
         return false;
     }
-    const ListOfObjects *notesOrRests = beam->GetList(beam);
-    ListOfObjects::const_iterator iter = notesOrRests->begin();
+    const ArrayOfObjects *notesOrRests = beam->GetList(beam);
+    ArrayOfObjects::const_iterator iter = notesOrRests->begin();
     if (*iter == noteOrRest) {
         return true;
     }
@@ -132,8 +132,8 @@ bool DurationInterface::IsLastInBeam(LayerElement *noteOrRest)
     if (!beam) {
         return false;
     }
-    const ListOfObjects *notesOrRests = beam->GetList(beam);
-    ListOfObjects::const_reverse_iterator iter = notesOrRests->rbegin();
+    const ArrayOfObjects *notesOrRests = beam->GetList(beam);
+    ArrayOfObjects::const_reverse_iterator iter = notesOrRests->rbegin();
     if (*iter == noteOrRest) {
         return true;
     }

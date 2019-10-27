@@ -8,15 +8,8 @@
 #ifndef __VRV_DC_H__
 #define __VRV_DC_H__
 
-#define _USE_MATH_DEFINES // needed by Windows for math constants like "M_PI"
-#include <math.h>
 #include <stack>
 #include <string>
-
-// In case it is not defined before...
-#ifndef M_PI
-#define M_PI (3.14159265358979323846264338327950288)
-#endif
 
 //----------------------------------------------------------------------------
 
@@ -32,6 +25,7 @@ namespace vrv {
 class Glyph;
 class Object;
 class View;
+class Zone;
 
 extern "C" {
 static inline double DegToRad(double deg)
@@ -176,10 +170,13 @@ public:
     virtual void EndText() = 0;
 
     /**
-     * Move a text to the specified position, for example when starting a new line.
-     * This method should be called only between a StartText and EndText call.
+     * @name Move a text to the specified position, for example when starting a new line.
+     * These methods should be called only between a StartText and EndText call.
      */
+    ///@{
     virtual void MoveTextTo(int x, int y, data_HORIZONTALALIGNMENT alignment) = 0;
+    virtual void MoveTextVerticallyTo(int y) = 0;
+    ///@}
 
     /**
      * @name Temporarily deactivate a graphic
@@ -201,7 +198,7 @@ public:
      * For example, the method can be used for grouping shapes in <g></g> in SVG
      */
     ///@{
-    virtual void StartGraphic(Object *object, std::string gClass, std::string gId) = 0;
+    virtual void StartGraphic(Object *object, std::string gClass, std::string gId, bool preprend = false) = 0;
     virtual void EndGraphic(Object *object, View *view) = 0;
     ///@}
 
@@ -281,6 +278,8 @@ protected:
     /** flag for indicating if the graphic is deactivated */
     bool m_isDeactivatedX;
     bool m_isDeactivatedY;
+
+    Zone *m_facsimile = NULL;
 
 private:
     /** stores the width and height of the device context */

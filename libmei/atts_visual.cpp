@@ -569,7 +569,7 @@ bool AttEpisemaVis::HasForm() const
 
 bool AttEpisemaVis::HasPlace() const
 {
-    return (m_place.HasValue());
+    return (m_place != data_EVENTREL());
 }
 
 /* include <attplace> */
@@ -900,12 +900,12 @@ bool AttHispanTickVis::WriteHispanTickVis(pugi::xml_node element)
 
 bool AttHispanTickVis::HasPlace() const
 {
-    return (m_place.HasValue());
+    return (m_place != data_EVENTREL());
 }
 
 bool AttHispanTickVis::HasTilt() const
 {
-    return (m_tilt.HasValue());
+    return (m_tilt != data_COMPASSDIRECTION());
 }
 
 /* include <atttilt> */
@@ -1836,7 +1836,7 @@ bool AttSignifLetVis::WriteSignifLetVis(pugi::xml_node element)
 
 bool AttSignifLetVis::HasPlace() const
 {
-    return (m_place.HasValue());
+    return (m_place != data_EVENTREL());
 }
 
 /* include <attplace> */
@@ -1906,7 +1906,7 @@ void AttStaffDefVis::ResetStaffDefVis()
     m_layerscheme = LAYERSCHEME_NONE;
     m_linesColor = "";
     m_linesVisible = BOOLEAN_NONE;
-    m_spacing = "";
+    m_spacing = VRV_UNSET;
 }
 
 bool AttStaffDefVis::ReadStaffDefVis(pugi::xml_node element)
@@ -1933,7 +1933,7 @@ bool AttStaffDefVis::ReadStaffDefVis(pugi::xml_node element)
         hasAttribute = true;
     }
     if (element.attribute("spacing")) {
-        this->SetSpacing(StrToStr(element.attribute("spacing").value()));
+        this->SetSpacing(StrToMeasurementrel(element.attribute("spacing").value()));
         element.remove_attribute("spacing");
         hasAttribute = true;
     }
@@ -1960,7 +1960,7 @@ bool AttStaffDefVis::WriteStaffDefVis(pugi::xml_node element)
         wroteAttribute = true;
     }
     if (this->HasSpacing()) {
-        element.append_attribute("spacing") = StrToStr(this->GetSpacing()).c_str();
+        element.append_attribute("spacing") = MeasurementrelToStr(this->GetSpacing()).c_str();
         wroteAttribute = true;
     }
     return wroteAttribute;
@@ -1988,7 +1988,7 @@ bool AttStaffDefVis::HasLinesVisible() const
 
 bool AttStaffDefVis::HasSpacing() const
 {
-    return (m_spacing != "");
+    return (m_spacing != VRV_UNSET);
 }
 
 /* include <attspacing> */
@@ -2516,7 +2516,7 @@ bool Att::SetVisual(Object *element, std::string attrType, std::string attrValue
             return true;
         }
         if (attrType == "spacing") {
-            att->SetSpacing(att->StrToStr(attrValue));
+            att->SetSpacing(att->StrToMeasurementrel(attrValue));
             return true;
         }
     }
@@ -2874,7 +2874,7 @@ void Att::GetVisual(const Object *element, ArrayOfStrAttr *attributes)
             attributes->push_back(std::make_pair("lines.visible", att->BooleanToStr(att->GetLinesVisible())));
         }
         if (att->HasSpacing()) {
-            attributes->push_back(std::make_pair("spacing", att->StrToStr(att->GetSpacing())));
+            attributes->push_back(std::make_pair("spacing", att->MeasurementrelToStr(att->GetSpacing())));
         }
     }
     if (element->HasAttClass(ATT_STAFFGRPVIS)) {

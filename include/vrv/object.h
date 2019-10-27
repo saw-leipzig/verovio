@@ -29,6 +29,7 @@ class FileOutputStream;
 class Functor;
 class FunctorParams;
 class LinkingInterface;
+class FacsimileInterface;
 class PitchInterface;
 class PositionInterface;
 class ScoreDefInterface;
@@ -36,6 +37,7 @@ class StemmedDrawingInterface;
 class TextDirInterface;
 class TimePointInterface;
 class TimeSpanningInterface;
+class Zone;
 
 #define UNLIMITED_DEPTH -10000
 #define FORWARD true
@@ -68,7 +70,7 @@ public:
      */
     ///@{
     void SetAsReferenceObject();
-    bool IsReferenceObject() const { return m_isReferencObject; }
+    bool IsReferenceObject() const { return m_isReferenceObject; }
     ///@}
 
     /**
@@ -132,6 +134,7 @@ public:
 
     virtual DurationInterface *GetDurationInterface() { return NULL; }
     virtual LinkingInterface *GetLinkingInterface() { return NULL; }
+    virtual FacsimileInterface *GetFacsimileInterface() { return NULL; }
     virtual PitchInterface *GetPitchInterface() { return NULL; }
     virtual PlistInterface *GetPlistInterface() { return NULL; }
     virtual PositionInterface *GetPositionInterface() { return NULL; }
@@ -178,6 +181,22 @@ public:
     void ReplaceChild(Object *currentChild, Object *replacingChild);
 
     /**
+     * @name Insert an object before or after a given child
+     */
+    ///@{
+    void InsertBefore(Object *child, Object *newChild);
+    void InsertAfter(Object *child, Object *newChild);
+    ///@}
+
+    /**
+     * Sort children by a function that takes two arguments and
+     * returns true if the first argument is less than the second.
+     * If the order of children changes, this returns true.
+     */
+    typedef bool (*binaryComp)(Object *, Object *);
+    void SortChildren(binaryComp comp);
+
+    /**
      * Move an object to another parent.
      * The object is relinquished from its current parent - see Object::Relinquish
      */
@@ -200,7 +219,7 @@ public:
      * This methods has to be called expicitly when overriden because it is not called from the constructors.
      * Do not forget to call base-class equivalent whenever applicable (e.g, with more than one hierarchy level).
      */
-    virtual void CopyReset(){};
+    virtual void CloneReset();
 
     std::string GetUuid() const { return m_uuid; }
     void SetUuid(std::string uuid);
@@ -227,7 +246,7 @@ public:
      * Child access (generic)
      */
     Object *GetChild(int idx) const;
-    
+
     /**
      * Return a cont pointer to the children
      */
@@ -319,7 +338,7 @@ public:
      * Look for the Object in the children and return its position (-1 if not found)
      */
     int GetChildIndex(const Object *child);
-    
+
     /**
      * Look for all Objects of a class and return its position (-1 if not found)
      */
@@ -427,7 +446,7 @@ public:
      * Fill the list of all the children LayerElement.
      * This is used for navigating in a Layer (See Layer::GetPrevious and Layer::GetNext).
      */
-    void FillFlatList(ListOfObjects *list);
+    void FillFlatList(ArrayOfObjects *list);
 
     /**
      * Check if the content was modified or not
@@ -448,11 +467,17 @@ public:
     ///@}
 
     /**
+     * Return true if the object contains any editorial content
+     */
+    bool HasEditorialContent();
+
+    /**
      * Saves the object (and its children) using the specified output stream.
      * Creates functors that will parse the tree.
      */
     virtual int Save(FileOutputStream *output);
 
+    virtual void ReorderByXPos();
     /**
      * Main method that processes functors.
      * For each object, it will call the functor.
@@ -507,12 +532,12 @@ public:
     /**
      * Look if the time / duration passed as parameter overlap with a space in the alignment references
      */
-    virtual int FindSpaceInReferenceAlignments(FunctorParams *) { return FUNCTOR_CONTINUE; }
+    virtual int LayerCountInTimeSpan(FunctorParams *) { return FUNCTOR_CONTINUE; }
 
     /**
-     * Retrieve the time spanning layer elements between two points
+     * Retrieve the layer elements spanned by two points
      */
-    virtual int FindTimeSpanningLayerElements(FunctorParams *) { return FUNCTOR_CONTINUE; }
+    virtual int FindSpannedLayerElements(FunctorParams *) { return FUNCTOR_CONTINUE; }
 
     /**
      * Retrieve the minimum left and maximum right for an alignment.
@@ -551,6 +576,14 @@ public:
     ///@{
     virtual int ConvertAnalyticalMarkup(FunctorParams *) { return FUNCTOR_CONTINUE; }
     virtual int ConvertAnalyticalMarkupEnd(FunctorParams *) { return FUNCTOR_CONTINUE; }
+    ///@}
+
+    /**
+     * Convert scoreDef / staffDef markup (@clef.*, @key.*) to elements.
+     * See Doc::ConvertScoreDefMarkupDoc
+     */
+    ///@{
+    virtual int ConvertScoreDefMarkup(FunctorParams *) { return FUNCTOR_CONTINUE; }
     ///@}
 
     /**
@@ -632,7 +665,7 @@ public:
     virtual int AdjustLayers(FunctorParams *) { return FUNCTOR_CONTINUE; }
 
     /**
-     * Lay out the X positions of the grace notes looking at the bounding boxes.
+     * @name Lay out the X positions of the grace notes looking at the bounding boxes.
      * The functor is redirected from the MeasureAligner and then from the appropriate
      * alignment to the GraceAligner
      */
@@ -642,12 +675,20 @@ public:
     ///@}
 
     /**
+     * @name Adjust the horizontal position of harms by groups in order to avoid overlapping
+     */
+    ///@{
+    virtual int AdjustHarmGrpsSpacing(FunctorParams *) { return FUNCTOR_CONTINUE; };
+    virtual int AdjustHarmGrpsSpacingEnd(FunctorParams *) { return FUNCTOR_CONTINUE; };
+    ///@}
+
+    /**
      * Adjust the x position of accidental.
      */
     virtual int AdjustAccidX(FunctorParams *) { return FUNCTOR_CONTINUE; }
 
     /**
-     * Adjust the x position of a right barline in order to make sure the is no text content
+     * @name Adjust the x position of a right barline in order to make sure the is no text content
      * overlflowing in the right margin
      */
     ///@{
@@ -672,6 +713,11 @@ public:
     virtual int AdjustSylSpacing(FunctorParams *) { return FUNCTOR_CONTINUE; };
     virtual int AdjustSylSpacingEnd(FunctorParams *) { return FUNCTOR_CONTINUE; };
     ///@}
+
+    /**
+     * Calculate the x position of tuplet brackets and num
+     */
+    virtual int AdjustTupletsX(FunctorParams *) { return FUNCTOR_CONTINUE; }
 
     ///@}
 
@@ -700,9 +746,14 @@ public:
     virtual int CalcLedgerLines(FunctorParams *) { return FUNCTOR_CONTINUE; }
 
     /**
-     * Adjust the position the outside articulations.
+     * Calcultate the position the outside articulations.
      */
     virtual int CalcArtic(FunctorParams *) { return FUNCTOR_CONTINUE; }
+
+    /**
+     * Adjust the postion position of slurs.
+     */
+    virtual int AdjustSlurs(FunctorParams *) { return FUNCTOR_CONTINUE; }
 
     /**
      * Adjust the position the outside articulations with slur.
@@ -710,19 +761,33 @@ public:
     virtual int AdjustArticWithSlurs(FunctorParams *) { return FUNCTOR_CONTINUE; }
 
     /**
+     * @name Adjust the position of cross-staff element after the adjustment of the staves.
+     * This is called by Chords and Tuplets with cross-staff content
+     */
+    ///@{
+    virtual int AdjustCrossStaffYPos(FunctorParams *) { return FUNCTOR_CONTINUE; }
+    virtual int AdjustCrossStaffYPosEnd(FunctorParams *) { return FUNCTOR_CONTINUE; }
+    ///@}
+
+    /**
      * Adjust the position of all floating positionner, staff by staff.
      */
-    virtual int AdjustFloatingPostioners(FunctorParams *) { return FUNCTOR_CONTINUE; }
+    virtual int AdjustFloatingPositioners(FunctorParams *) { return FUNCTOR_CONTINUE; }
 
     /**
      * Adjust the position of all floating positionner that are grouped, staff by staff.
      */
-    virtual int AdjustFloatingPostionerGrps(FunctorParams *) { return FUNCTOR_CONTINUE; }
+    virtual int AdjustFloatingPositionerGrps(FunctorParams *) { return FUNCTOR_CONTINUE; }
 
     /**
      * Calculate the overlap of the staff aligmnents by looking at the overflow bounding boxes
      */
     virtual int AdjustStaffOverlap(FunctorParams *) { return FUNCTOR_CONTINUE; }
+
+    /**
+     * Calculate the y position of tuplet brackets and num
+     */
+    virtual int AdjustTupletsY(FunctorParams *) { return FUNCTOR_CONTINUE; }
 
     /**
      * Adjust the position of the StaffAlignment.
@@ -740,9 +805,12 @@ public:
     virtual int SetOverflowBBoxesEnd(FunctorParams *functorParams);
 
     /**
-     * Align the system by adjusting the m_drawingYRel position looking at the SystemAligner.
+     * @name Align the system by adjusting the m_drawingYRel position looking at the SystemAligner.
      */
+    ///@{
     virtual int AlignSystems(FunctorParams *) { return FUNCTOR_CONTINUE; }
+    virtual int AlignSystemsEnd(FunctorParams *) { return FUNCTOR_CONTINUE; }
+    ///@}
 
     ///@}
 
@@ -1026,6 +1094,18 @@ public:
 
     ///@}
 
+    /**
+     * Reorder elements by x-position.
+     */
+    virtual int ReorderByXPos(FunctorParams *);
+
+    /**
+     * Associate child objects with zones.
+     */
+    virtual int SetChildZones(FunctorParams *);
+
+    static bool sortByUlx(Object *a, Object *b);
+
 protected:
     //
 private:
@@ -1071,7 +1151,7 @@ private:
      * A reference object do not own children.
      * Destructor will not delete them.
      */
-    bool m_isReferencObject;
+    bool m_isReferenceObject;
 
     /**
      * Indicates whether the object content is up-to-date or not.
@@ -1164,18 +1244,18 @@ public:
      * If not, it updates the list and also calls FilterList.
      * Because this is an interface, we need to pass the object - not the best design.
      */
-    const ListOfObjects *GetList(Object *node);
+    const ArrayOfObjects *GetList(Object *node);
 
 private:
-    mutable ListOfObjects m_list;
-    ListOfObjects::iterator m_iteratorCurrent;
+    mutable ArrayOfObjects m_list;
+    ArrayOfObjects::iterator m_iteratorCurrent;
 
 protected:
     /**
      * Filter the list for a specific class.
      * For example, keep only notes in Beam
      */
-    virtual void FilterList(ListOfObjects *childList){};
+    virtual void FilterList(ArrayOfObjects *childList){};
 
 public:
     /**
@@ -1205,7 +1285,7 @@ public:
      * Returns a contatenated version of all the text children
      */
     std::wstring GetText(Object *node);
-    
+
     /**
      * Fill an array of lines with concatenated content of each line
      */
@@ -1216,7 +1296,7 @@ protected:
      * Filter the list for a specific class.
      * For example, keep only notes in Beam
      */
-    virtual void FilterList(ListOfObjects *childList);
+    virtual void FilterList(ArrayOfObjects *childList);
 
 private:
     //

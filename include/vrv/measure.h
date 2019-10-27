@@ -47,10 +47,16 @@ public:
     ///@{
     Measure(bool measuredMusic = true, int logMeasureNb = -1);
     virtual ~Measure();
+    virtual Object *Clone() const { return new Measure(*this); };
     virtual void Reset();
     virtual std::string GetClassName() const { return "Measure"; }
     virtual ClassId GetClassId() const { return MEASURE; }
     ///@}
+
+    /**
+     * Overriding CloneReset() method to be called after copy / assignment calls.
+     */
+    virtual void CloneReset();
 
     /**
      * Return true if measured music (otherwise we have fake measures)
@@ -291,6 +297,11 @@ public:
     virtual int AdjustXPos(FunctorParams *functorParams);
 
     /**
+     * See Object::AdjustHarmGrpsSpacing
+     */
+    virtual int AdjustHarmGrpsSpacingEnd(FunctorParams *functorParams);
+
+    /**
      * See Object::AdjustSylSpacing
      */
     virtual int AdjustSylSpacingEnd(FunctorParams *functorParams);
@@ -397,7 +408,7 @@ public:
     /**
      * The measure aligner that holds the x positions of the content of the measure
      */
-    MeasureAligner m_measureAligner;
+    mutable MeasureAligner m_measureAligner;
 
     TimestampAligner m_timestampAligner;
 

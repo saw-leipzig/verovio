@@ -37,6 +37,7 @@ public:
     ///@{
     Harm();
     virtual ~Harm();
+    virtual Object *Clone() const { return new Harm(*this); }
     virtual void Reset();
     virtual std::string GetClassName() const { return "Harm"; }
     virtual ClassId GetClassId() const { return HARM; }
@@ -65,6 +66,11 @@ public:
      * See Object::PrepareFloatingGrps
      */
     virtual int PrepareFloatingGrps(FunctorParams *functoParams);
+
+    /**
+     * See Object::AdjustHarmGrpsSpacing
+     */
+    virtual int AdjustHarmGrpsSpacing(FunctorParams *functorParams);
 
 protected:
     //

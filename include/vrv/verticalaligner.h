@@ -13,7 +13,7 @@
 
 namespace vrv {
 
-class AdjustFloatingPostionerGrpsParams;
+class AdjustFloatingPositionerGrpsParams;
 class FloatingObject;
 class StaffAlignment;
 class SystemAligner;
@@ -33,6 +33,11 @@ public:
     SystemAligner();
     virtual ~SystemAligner();
     virtual ClassId GetClassId() const { return SYSTEM_ALIGNER; }
+
+    /**
+     * Do not copy children for HorizontalAligner
+     */
+    virtual bool CopyChildren() const { return false; }
 
     /**
      * Reset the aligner (clear the content) and creates the end (bottom) alignement
@@ -126,7 +131,7 @@ public:
      * Return NULL if not found and does not create anything.
      */
     FloatingPositioner *FindFirstFloatingPositioner(ClassId classId);
-    
+
     /**
      * Look for the FloatingPositioner corresponding to the FloatingObject.
      * Return NULL if not found and does not create anything.
@@ -188,8 +193,9 @@ public:
      */
     void FindAllIntersectionPoints(
         SegmentedLine &line, BoundingBox &boundingBox, const std::vector<ClassId> &classIds, int margin);
-    
-    void ReAdjustFloatingPositionersGrps(AdjustFloatingPostionerGrpsParams *params, const ArrayOfFloatingPositioners &positioners, ArrayOfIntPairs &grpIdYRel);
+
+    void ReAdjustFloatingPositionersGrps(AdjustFloatingPositionerGrpsParams *params,
+        const ArrayOfFloatingPositioners &positioners, ArrayOfIntPairs &grpIdYRel);
 
     //----------//
     // Functors //
@@ -211,14 +217,24 @@ public:
     virtual int AdjustStaffOverlap(FunctorParams *functorParams);
 
     /**
-     * See Object::AdjustFloatingPostioners
+     * See Object::AdjustFloatingPositioners
      */
-    virtual int AdjustFloatingPostioners(FunctorParams *functorParams);
+    virtual int AdjustFloatingPositioners(FunctorParams *functorParams);
 
     /**
-     * See Object::AdjustFloatingPostionerGrps
+     * See Object::AdjustFloatingPositionerGrps
      */
-    virtual int AdjustFloatingPostionerGrps(FunctorParams *functorParams);
+    virtual int AdjustFloatingPositionerGrps(FunctorParams *functorParams);
+
+    /**
+     * See Object::AdjustSlurs
+     */
+    virtual int AdjustSlurs(FunctorParams *functorParams);
+
+    /**
+     * See Object::JustifyY
+     */
+    virtual int JustifyY(FunctorParams *functorParams);
 
 private:
     //

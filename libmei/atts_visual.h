@@ -387,8 +387,6 @@ public:
     void SetPlace(data_EVENTREL place_) { m_place = place_; }
     data_EVENTREL GetPlace() const { return m_place; }
     bool HasPlace() const;
-    /** Getter for reference (for alternate type only) */
-    data_EVENTREL *GetPlaceAlternate() { return &m_place; }
     ///@}
 
 private:
@@ -628,14 +626,10 @@ public:
     void SetPlace(data_EVENTREL place_) { m_place = place_; }
     data_EVENTREL GetPlace() const { return m_place; }
     bool HasPlace() const;
-    /** Getter for reference (for alternate type only) */
-    data_EVENTREL *GetPlaceAlternate() { return &m_place; }
     //
     void SetTilt(data_COMPASSDIRECTION tilt_) { m_tilt = tilt_; }
     data_COMPASSDIRECTION GetTilt() const { return m_tilt; }
     bool HasTilt() const;
-    /** Getter for reference (for alternate type only) */
-    data_COMPASSDIRECTION *GetTiltAlternate() { return &m_tilt; }
     ///@}
 
 private:
@@ -1313,8 +1307,6 @@ public:
     void SetPlace(data_EVENTREL place_) { m_place = place_; }
     data_EVENTREL GetPlace() const { return m_place; }
     bool HasPlace() const;
-    /** Getter for reference (for alternate type only) */
-    data_EVENTREL *GetPlaceAlternate() { return &m_place; }
     ///@}
 
 private:
@@ -1403,8 +1395,8 @@ public:
     data_BOOLEAN GetLinesVisible() const { return m_linesVisible; }
     bool HasLinesVisible() const;
     //
-    void SetSpacing(std::string spacing_) { m_spacing = spacing_; }
-    std::string GetSpacing() const { return m_spacing; }
+    void SetSpacing(data_MEASUREMENTREL spacing_) { m_spacing = spacing_; }
+    data_MEASUREMENTREL GetSpacing() const { return m_spacing; }
     bool HasSpacing() const;
     ///@}
 
@@ -1424,7 +1416,7 @@ private:
     /** Records whether all staff lines are visible. **/
     data_BOOLEAN m_linesVisible;
     /** Records the absolute distance (as opposed to the relative distances recorded in **/
-    std::string m_spacing;
+    data_MEASUREMENTREL m_spacing;
 
     /* include <attspacing> */
 };

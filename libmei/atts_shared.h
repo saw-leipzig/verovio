@@ -1145,29 +1145,29 @@ public:
      * to the default value)
      **/
     ///@{
-    void SetDynamDist(std::string dynamDist_) { m_dynamDist = dynamDist_; }
-    std::string GetDynamDist() const { return m_dynamDist; }
+    void SetDynamDist(data_MEASUREMENTREL dynamDist_) { m_dynamDist = dynamDist_; }
+    data_MEASUREMENTREL GetDynamDist() const { return m_dynamDist; }
     bool HasDynamDist() const;
     //
-    void SetHarmDist(std::string harmDist_) { m_harmDist = harmDist_; }
-    std::string GetHarmDist() const { return m_harmDist; }
+    void SetHarmDist(data_MEASUREMENTREL harmDist_) { m_harmDist = harmDist_; }
+    data_MEASUREMENTREL GetHarmDist() const { return m_harmDist; }
     bool HasHarmDist() const;
     //
-    void SetTextDist(std::string textDist_) { m_textDist = textDist_; }
-    std::string GetTextDist() const { return m_textDist; }
+    void SetTextDist(data_MEASUREMENTREL textDist_) { m_textDist = textDist_; }
+    data_MEASUREMENTREL GetTextDist() const { return m_textDist; }
     bool HasTextDist() const;
     ///@}
 
 private:
     /** Records the default distance from the staff for dynamic marks. **/
-    std::string m_dynamDist;
+    data_MEASUREMENTREL m_dynamDist;
     /**
      * Records the default distance from the staff of harmonic indications, such as
      * guitar chord grids or functional labels.
      **/
-    std::string m_harmDist;
+    data_MEASUREMENTREL m_harmDist;
     /** Determines how far from the staff to render text elements. **/
-    std::string m_textDist;
+    data_MEASUREMENTREL m_textDist;
 
     /* include <atttext.dist> */
 };
@@ -1919,14 +1919,14 @@ public:
      * to the default value)
      **/
     ///@{
-    void SetSig(std::string sig_) { m_sig = sig_; }
-    std::string GetSig() const { return m_sig; }
+    void SetSig(data_KEYSIGNATURE sig_) { m_sig = sig_; }
+    data_KEYSIGNATURE GetSig() const { return m_sig; }
     bool HasSig() const;
     ///@}
 
 private:
     /** Written key signature. **/
-    std::string m_sig;
+    data_KEYSIGNATURE m_sig;
 
     /* include <attsig> */
 };
@@ -2385,8 +2385,8 @@ public:
      * to the default value)
      **/
     ///@{
-    void SetLyricAlign(std::string lyricAlign_) { m_lyricAlign = lyricAlign_; }
-    std::string GetLyricAlign() const { return m_lyricAlign; }
+    void SetLyricAlign(data_MEASUREMENTREL lyricAlign_) { m_lyricAlign = lyricAlign_; }
+    data_MEASUREMENTREL GetLyricAlign() const { return m_lyricAlign; }
     bool HasLyricAlign() const;
     //
     void SetLyricFam(std::string lyricFam_) { m_lyricFam = lyricFam_; }
@@ -2414,7 +2414,7 @@ public:
 
 private:
     /** Describes the alignment of lyric syllables associated with a note or chord. **/
-    std::string m_lyricAlign;
+    data_MEASUREMENTREL m_lyricAlign;
     /** Sets the font family default value for lyrics. **/
     std::string m_lyricFam;
     /** Sets the font name default value for lyrics. **/
@@ -3224,16 +3224,16 @@ public:
     std::string GetHeadFillcolor() const { return m_headFillcolor; }
     bool HasHeadFillcolor() const;
     //
-    void SetHeadMod(std::string headMod_) { m_headMod = headMod_; }
-    std::string GetHeadMod() const { return m_headMod; }
+    void SetHeadMod(data_NOTEHEADMODIFIER headMod_) { m_headMod = headMod_; }
+    data_NOTEHEADMODIFIER GetHeadMod() const { return m_headMod; }
     bool HasHeadMod() const;
     //
-    void SetHeadRotation(std::string headRotation_) { m_headRotation = headRotation_; }
-    std::string GetHeadRotation() const { return m_headRotation; }
+    void SetHeadRotation(data_ROTATION headRotation_) { m_headRotation = headRotation_; }
+    data_ROTATION GetHeadRotation() const { return m_headRotation; }
     bool HasHeadRotation() const;
     //
-    void SetHeadShape(data_HEADSHAPE_list headShape_) { m_headShape = headShape_; }
-    data_HEADSHAPE_list GetHeadShape() const { return m_headShape; }
+    void SetHeadShape(data_HEADSHAPE headShape_) { m_headShape = headShape_; }
+    data_HEADSHAPE GetHeadShape() const { return m_headShape; }
     bool HasHeadShape() const;
     //
     void SetHeadVisible(data_BOOLEAN headVisible_) { m_headVisible = headVisible_; }
@@ -3259,15 +3259,15 @@ private:
     /** Captures the fill color of a notehead if different from the overall note color. **/
     std::string m_headFillcolor;
     /** Records any additional symbols applied to the notehead. **/
-    std::string m_headMod;
+    data_NOTEHEADMODIFIER m_headMod;
     /**
      * Describes rotation applied to the basic notehead shape.
      * A positive value rotates the notehead in a counter-clockwise fashion, while
      * negative values produce clockwise rotation.
      **/
-    std::string m_headRotation;
+    data_ROTATION m_headRotation;
     /** Used to override the head shape normally used for the given duration. **/
-    data_HEADSHAPE_list m_headShape;
+    data_HEADSHAPE m_headShape;
     /**
      * Indicates if a feature should be rendered when the notation is presented
      * graphically or sounded when it is presented in an aural form.
@@ -3835,8 +3835,6 @@ public:
     void SetPlace(data_STAFFREL place_) { m_place = place_; }
     data_STAFFREL GetPlace() const { return m_place; }
     bool HasPlace() const;
-    /** Getter for reference (for alternate type only) */
-    data_STAFFREL *GetPlaceAlternate() { return &m_place; }
     ///@}
 
 private:
@@ -4325,12 +4323,12 @@ public:
     double GetSpacingPackfact() const { return m_spacingPackfact; }
     bool HasSpacingPackfact() const;
     //
-    void SetSpacingStaff(std::string spacingStaff_) { m_spacingStaff = spacingStaff_; }
-    std::string GetSpacingStaff() const { return m_spacingStaff; }
+    void SetSpacingStaff(data_MEASUREMENTREL spacingStaff_) { m_spacingStaff = spacingStaff_; }
+    data_MEASUREMENTREL GetSpacingStaff() const { return m_spacingStaff; }
     bool HasSpacingStaff() const;
     //
-    void SetSpacingSystem(std::string spacingSystem_) { m_spacingSystem = spacingSystem_; }
-    std::string GetSpacingSystem() const { return m_spacingSystem; }
+    void SetSpacingSystem(data_MEASUREMENTREL spacingSystem_) { m_spacingSystem = spacingSystem_; }
+    data_MEASUREMENTREL GetSpacingSystem() const { return m_spacingSystem; }
     bool HasSpacingSystem() const;
     ///@}
 
@@ -4344,14 +4342,14 @@ private:
      * system; measured from the bottom line of the staff above to the top line of the
      * staff below.
      **/
-    std::string m_spacingStaff;
+    data_MEASUREMENTREL m_spacingStaff;
     /**
      * Describes the space between adjacent systems; a pair of space-separated values
      * (minimum and maximum, respectively) provides a range between which a rendering
      * system-supplied value may fall, while a single value indicates a fixed amount of
      * space; that is, the minimum and maximum values are equal.
      **/
-    std::string m_spacingSystem;
+    data_MEASUREMENTREL m_spacingSystem;
 
     /* include <attspacing.system> */
 };
@@ -4531,20 +4529,14 @@ public:
     void SetAboveorder(data_STAFFITEM aboveorder_) { m_aboveorder = aboveorder_; }
     data_STAFFITEM GetAboveorder() const { return m_aboveorder; }
     bool HasAboveorder() const;
-    /** Getter for reference (for alternate type only) */
-    data_STAFFITEM *GetAboveorderAlternate() { return &m_aboveorder; }
     //
     void SetBeloworder(data_STAFFITEM beloworder_) { m_beloworder = beloworder_; }
     data_STAFFITEM GetBeloworder() const { return m_beloworder; }
     bool HasBeloworder() const;
-    /** Getter for reference (for alternate type only) */
-    data_STAFFITEM *GetBeloworderAlternate() { return &m_beloworder; }
     //
     void SetBetweenorder(data_STAFFITEM betweenorder_) { m_betweenorder = betweenorder_; }
     data_STAFFITEM GetBetweenorder() const { return m_betweenorder; }
     bool HasBetweenorder() const;
-    /** Getter for reference (for alternate type only) */
-    data_STAFFITEM *GetBetweenorderAlternate() { return &m_betweenorder; }
     ///@}
 
 private:
@@ -5046,8 +5038,8 @@ public:
     std::string GetAltrend() const { return m_altrend; }
     bool HasAltrend() const;
     //
-    void SetRend(std::string rend_) { m_rend = rend_; }
-    std::string GetRend() const { return m_rend; }
+    void SetRend(data_TEXTRENDITION rend_) { m_rend = rend_; }
+    data_TEXTRENDITION GetRend() const { return m_rend; }
     bool HasRend() const;
     ///@}
 
@@ -5055,7 +5047,7 @@ private:
     /** Used to extend the values of the rend attribute. **/
     std::string m_altrend;
     /** Captures the appearance of the element's contents using MEI-defined descriptors. **/
-    std::string m_rend;
+    data_TEXTRENDITION m_rend;
 
     /* include <attrend> */
 };
@@ -5581,8 +5573,8 @@ public:
      * to the default value)
      **/
     ///@{
-    void SetHo(std::string ho_) { m_ho = ho_; }
-    std::string GetHo() const { return m_ho; }
+    void SetHo(data_MEASUREMENTREL ho_) { m_ho = ho_; }
+    data_MEASUREMENTREL GetHo() const { return m_ho; }
     bool HasHo() const;
     ///@}
 
@@ -5592,7 +5584,7 @@ private:
      * location in terms of staff interline distance; that is, in units of 1/2 the
      * distance between adjacent staff lines.
      **/
-    std::string m_ho;
+    data_MEASUREMENTREL m_ho;
 
     /* include <attho> */
 };
@@ -5660,8 +5652,8 @@ public:
      * to the default value)
      **/
     ///@{
-    void SetVo(std::string vo_) { m_vo = vo_; }
-    std::string GetVo() const { return m_vo; }
+    void SetVo(data_MEASUREMENTREL vo_) { m_vo = vo_; }
+    data_MEASUREMENTREL GetVo() const { return m_vo; }
     bool HasVo() const;
     ///@}
 
@@ -5671,7 +5663,7 @@ private:
      * location in terms of staff interline distance; that is, in units of 1/2 the
      * distance between adjacent staff lines.
      **/
-    std::string m_vo;
+    data_MEASUREMENTREL m_vo;
 
     /* include <attvo> */
 };
@@ -5700,12 +5692,12 @@ public:
      * to the default value)
      **/
     ///@{
-    void SetStartho(std::string startho_) { m_startho = startho_; }
-    std::string GetStartho() const { return m_startho; }
+    void SetStartho(data_MEASUREMENTREL startho_) { m_startho = startho_; }
+    data_MEASUREMENTREL GetStartho() const { return m_startho; }
     bool HasStartho() const;
     //
-    void SetEndho(std::string endho_) { m_endho = endho_; }
-    std::string GetEndho() const { return m_endho; }
+    void SetEndho(data_MEASUREMENTREL endho_) { m_endho = endho_; }
+    data_MEASUREMENTREL GetEndho() const { return m_endho; }
     bool HasEndho() const;
     ///@}
 
@@ -5714,12 +5706,12 @@ private:
      * Records the horizontal adjustment of a feature's programmatically-determined
      * start point.
      **/
-    std::string m_startho;
+    data_MEASUREMENTREL m_startho;
     /**
      * Records the horizontal adjustment of a feature's programmatically-determined end
      * point.
      **/
-    std::string m_endho;
+    data_MEASUREMENTREL m_endho;
 
     /* include <attendho> */
 };
@@ -5796,12 +5788,12 @@ public:
      * to the default value)
      **/
     ///@{
-    void SetStartvo(std::string startvo_) { m_startvo = startvo_; }
-    std::string GetStartvo() const { return m_startvo; }
+    void SetStartvo(data_MEASUREMENTREL startvo_) { m_startvo = startvo_; }
+    data_MEASUREMENTREL GetStartvo() const { return m_startvo; }
     bool HasStartvo() const;
     //
-    void SetEndvo(std::string endvo_) { m_endvo = endvo_; }
-    std::string GetEndvo() const { return m_endvo; }
+    void SetEndvo(data_MEASUREMENTREL endvo_) { m_endvo = endvo_; }
+    data_MEASUREMENTREL GetEndvo() const { return m_endvo; }
     bool HasEndvo() const;
     ///@}
 
@@ -5810,12 +5802,12 @@ private:
      * Records a vertical adjustment of a feature's programmatically-determined start
      * point.
      **/
-    std::string m_startvo;
+    data_MEASUREMENTREL m_startvo;
     /**
      * Records a vertical adjustment of a feature's programmatically-determined end
      * point.
      **/
-    std::string m_endvo;
+    data_MEASUREMENTREL m_endvo;
 
     /* include <attendvo> */
 };
