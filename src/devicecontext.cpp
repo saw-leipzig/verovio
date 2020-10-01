@@ -31,17 +31,29 @@ ClassId DeviceContext::GetClassId() const
     return DEVICE_CONTEXT;
 }
 
-void DeviceContext::SetPen(int colour, int width, int opacity, int dashLength)
+void DeviceContext::SetPen(int colour, int width, int opacity, int dashLength, int lineCap)
 {
     float opacityValue;
 
     switch (opacity) {
         case AxSOLID: opacityValue = 1.0; break;
+        case AxDOT:
+            dashLength = dashLength ? dashLength : width * 1;
+            opacityValue = 1.0;
+            break;
+        case AxLONG_DASH:
+            dashLength = dashLength ? dashLength : width * 4;
+            opacityValue = 1.0;
+            break;
+        case AxSHORT_DASH:
+            dashLength = dashLength ? dashLength : width * 2;
+            opacityValue = 1.0;
+            break;
         case AxTRANSPARENT: opacityValue = 0.0; break;
         default: opacityValue = 1.0; // solid brush by default
     }
 
-    m_penStack.push(Pen(colour, width, opacityValue, dashLength));
+    m_penStack.push(Pen(colour, width, opacityValue, dashLength, lineCap));
 }
 
 void DeviceContext::SetBrush(int colour, int opacity)
@@ -190,7 +202,10 @@ void DeviceContext::AddGlyphToTextExtend(Glyph *glyph, TextExtend *extend)
     tmp = advX * m_fontStack.top()->GetPointSize();
     advX = ceil(tmp / (double)glyph->GetUnitsPerEm());
 
-    extend->m_width += std::max(partialWidth + x, advX);
+    // Changed because the width should only be the sum of advX
+    // Alternatively we could add what is below 0 for the first and what is beyond the advx for the last
+    // extend->m_width += std::max(partialWidth + x, advX);
+    extend->m_width += advX;
     extend->m_height = std::max(partialHeight, extend->m_height);
     extend->m_ascent = std::max(partialHeight + y, extend->m_ascent);
     extend->m_descent = std::max(-y, extend->m_descent);

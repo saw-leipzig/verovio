@@ -51,7 +51,7 @@ public:
     virtual bool HasToBeAligned() const { return true; }
 
     /** Override the method since check is required */
-    virtual bool IsScoreDefElement() const { return (this->GetParent() && this->GetFirstParent(SCOREDEF)); }
+    virtual bool IsScoreDefElement() const { return (this->GetParent() && this->GetFirstAncestor(SCOREDEF)); }
 
     /**
      * Add an element (a keyAccid) to a keySig.
@@ -81,6 +81,17 @@ public:
      */
     static data_PITCHNAME GetAccidPnameAt(data_ACCIDENTAL_WRITTEN alterationType, int pos);
     static int GetOctave(data_ACCIDENTAL_WRITTEN alterationType, data_PITCHNAME pitch, Clef *clef);
+
+    int GetFifthsInt();
+
+    //----------//
+    // Functors //
+    //----------//
+
+    /**
+     * See Object::Transpose
+     */
+    virtual int Transpose(FunctorParams *);
 
 protected:
     /**

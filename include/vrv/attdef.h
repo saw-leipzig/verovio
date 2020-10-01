@@ -49,7 +49,9 @@ typedef double data_VU;
 #define DUR_32 7
 #define DUR_64 8
 #define DUR_128 9
-#define DUR_256 10 // this is it for now
+#define DUR_256 10
+#define DUR_512 11
+#define DUR_1024 12 // this is it for now
 // used for alignement
 #define DUR_MAX 1024
 // mensural duration
@@ -82,12 +84,11 @@ typedef std::vector<data_ARTICULATION> data_ARTICULATION_List;
  */
 enum data_BEATRPT_REND {
     BEATRPT_REND_NONE = 0,
+    BEATRPT_REND_1,
+    BEATRPT_REND_2,
+    BEATRPT_REND_3,
     BEATRPT_REND_4,
-    BEATRPT_REND_8,
-    BEATRPT_REND_16,
-    BEATRPT_REND_32,
-    BEATRPT_REND_64,
-    BEATRPT_REND_128,
+    BEATRPT_REND_5,
     BEATRPT_REND_mixed
 };
 

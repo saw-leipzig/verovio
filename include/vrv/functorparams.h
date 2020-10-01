@@ -27,7 +27,7 @@ class Dot;
 class Dots;
 class Dynam;
 class Ending;
-class FileOutputStream;
+class Output;
 class Functor;
 class Hairpin;
 class Harm;
@@ -50,6 +50,7 @@ class StemmedDrawingInterface;
 class Syl;
 class System;
 class SystemAligner;
+class Transposer;
 class Verse;
 
 //----------------------------------------------------------------------------
@@ -671,6 +672,12 @@ public:
 // Use FunctorDocParams
 
 //----------------------------------------------------------------------------
+// CalcLigatureNotePosParams
+//----------------------------------------------------------------------------
+
+// Use FunctorDocParams
+
+//----------------------------------------------------------------------------
 // CalcMaxMeasureDurationParams
 //----------------------------------------------------------------------------
 
@@ -775,25 +782,28 @@ public:
 
 /**
  * member 0: a pointer the document we are adding pages to
- * member 2: a pointer to the current page
- * member 4: a pointer to the current system
+ * member 1: a pointer to the current page
+ * member 2: a pointer to the current system
  * member 3: a pointer to the system we are taking the content from
- * member 5: a flag indicating if we have processed the first pb
+ * member 4: a flag if we want to use the pageBreaks from the document
  **/
 
 class CastOffEncodingParams : public FunctorParams {
 public:
-    CastOffEncodingParams(Doc *doc, Page *currentPage, System *currentSystem, System *contentSystem)
+    CastOffEncodingParams(
+        Doc *doc, Page *currentPage, System *currentSystem, System *contentSystem, bool usePages = true)
     {
         m_doc = doc;
         m_currentPage = currentPage;
         m_currentSystem = currentSystem;
         m_contentSystem = contentSystem;
+        m_usePages = usePages;
     }
     Doc *m_doc;
     Page *m_currentPage;
     System *m_contentSystem;
     System *m_currentSystem;
+    bool m_usePages;
 };
 
 //----------------------------------------------------------------------------
@@ -1198,12 +1208,12 @@ public:
         m_currentTempo = 120;
         m_functor = functor;
     }
-    std::map<int, double> realTimeToScoreTime;
-    std::map<int, std::vector<std::string> > realTimeToOnElements;
-    std::map<int, std::vector<std::string> > realTimeToOffElements;
-    std::map<int, int> realTimeToTempo;
+    std::map<double, double> realTimeToScoreTime;
+    std::map<double, std::vector<std::string> > realTimeToOnElements;
+    std::map<double, std::vector<std::string> > realTimeToOffElements;
+    std::map<double, int> realTimeToTempo;
     double m_scoreTimeOffset;
-    int m_realTimeOffsetMilliseconds;
+    double m_realTimeOffsetMilliseconds;
     int m_currentTempo;
     Functor *m_functor;
 };
@@ -1544,7 +1554,7 @@ public:
 class PrepareTimePointingParams : public FunctorParams {
 public:
     PrepareTimePointingParams() {}
-    ArrayOfPointingInterClassIdPairs m_timePointingInterfaces;
+    ListOfPointingInterClassIdPairs m_timePointingInterfaces;
 };
 
 //----------------------------------------------------------------------------
@@ -1559,7 +1569,7 @@ public:
 class PrepareTimeSpanningParams : public FunctorParams {
 public:
     PrepareTimeSpanningParams() { m_fillList = true; }
-    ArrayOfSpanningInterClassIdPairs m_timeSpanningInterfaces;
+    ListOfSpanningInterClassIdPairs m_timeSpanningInterfaces;
     bool m_fillList;
 };
 
@@ -1569,14 +1579,14 @@ public:
 
 /**
  * member 0: std::vector< Object*>* that holds the current elements to match
- * member 1:  ArrayOfObjectBeatPairs* that holds the tstamp2 elements for attach to the end measure
+ * member 1:  ListOfObjectBeatPairs* that holds the tstamp2 elements for attach to the end measure
  **/
 
 class PrepareTimestampsParams : public FunctorParams {
 public:
     PrepareTimestampsParams() {}
-    ArrayOfSpanningInterClassIdPairs m_timeSpanningInterfaces;
-    ArrayOfObjectBeatPairs m_tstamps;
+    ListOfSpanningInterClassIdPairs m_timeSpanningInterfaces;
+    ListOfObjectBeatPairs m_tstamps;
 };
 
 //----------------------------------------------------------------------------
@@ -1616,8 +1626,8 @@ public:
 
 class SaveParams : public FunctorParams {
 public:
-    SaveParams(FileOutputStream *output) { m_output = output; }
-    FileOutputStream *m_output;
+    SaveParams(Output *output) { m_output = output; }
+    Output *m_output;
 };
 
 //----------------------------------------------------------------------------
@@ -1765,6 +1775,26 @@ public:
     bool m_mensur;
     bool m_meterSig;
     bool m_applyToAll;
+};
+
+//----------------------------------------------------------------------------
+// TransposeParams
+//----------------------------------------------------------------------------
+
+/**
+ * member 0: a pointer to the transposer
+ * member 1: a pointer to document
+ **/
+
+class TransposeParams : public FunctorParams {
+public:
+    TransposeParams(Doc *doc, Transposer *transposer)
+    {
+        m_transposer = transposer;
+        m_doc = doc;
+    }
+    Transposer *m_transposer;
+    Doc *m_doc;
 };
 
 //----------------------------------------------------------------------------

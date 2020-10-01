@@ -99,12 +99,11 @@ std::string Att::BeatrptRendToStr(data_BEATRPT_REND data) const
 {
     std::string value;
     switch (data) {
+        case BEATRPT_REND_1: value = "1"; break;
+        case BEATRPT_REND_2: value = "2"; break;
+        case BEATRPT_REND_3: value = "3"; break;
         case BEATRPT_REND_4: value = "4"; break;
-        case BEATRPT_REND_8: value = "8"; break;
-        case BEATRPT_REND_16: value = "16"; break;
-        case BEATRPT_REND_32: value = "32"; break;
-        case BEATRPT_REND_64: value = "64"; break;
-        case BEATRPT_REND_128: value = "128"; break;
+        case BEATRPT_REND_5: value = "5"; break;
         case BEATRPT_REND_mixed: value = "mixed"; break;
         default:
             LogWarning("Unknown beatrpt rend '%d'", data);
@@ -116,12 +115,11 @@ std::string Att::BeatrptRendToStr(data_BEATRPT_REND data) const
 
 data_BEATRPT_REND Att::StrToBeatrptRend(std::string value, bool logWarning) const
 {
+    if (value == "1") return BEATRPT_REND_1;
+    if (value == "2") return BEATRPT_REND_2;
+    if (value == "3") return BEATRPT_REND_3;
     if (value == "4") return BEATRPT_REND_4;
-    if (value == "8") return BEATRPT_REND_8;
-    if (value == "16") return BEATRPT_REND_16;
-    if (value == "32") return BEATRPT_REND_32;
-    if (value == "64") return BEATRPT_REND_64;
-    if (value == "128") return BEATRPT_REND_128;
+    if (value == "5") return BEATRPT_REND_5;
     if (value == "mixed") return BEATRPT_REND_mixed;
     if (logWarning && !value.empty()) LogWarning("Unsupported beatrpt rend '%s'", value.c_str());
     return BEATRPT_REND_NONE;
@@ -150,6 +148,8 @@ std::string Att::DurationToStr(data_DURATION data) const
         case DURATION_64: value = "64"; break;
         case DURATION_128: value = "128"; break;
         case DURATION_256: value = "256"; break;
+        case DURATION_512: value = "512"; break;
+        case DURATION_1024: value = "1024"; break;
         default:
             LogWarning("Unknown dur '%d'", data);
             value = "4";
@@ -179,6 +179,8 @@ data_DURATION Att::StrToDuration(std::string value, bool logWarning) const
     if (value == "64") return DURATION_64;
     if (value == "128") return DURATION_128;
     if (value == "256") return DURATION_256;
+    if (value == "512") return DURATION_512;
+    if (value == "1024") return DURATION_1024;
     if ((value.length() > 0) && (value[value.length() - 1] == 'p')) {
         // if (logWarning)
         // LogWarning("PPQ duration dur_s are not supported"); // remove it for now
@@ -794,6 +796,24 @@ data_STAFFREL_basic Att::StaffrelToStaffrelBasic(data_STAFFREL staffrel)
         default: staffrelBasic = STAFFREL_basic_NONE; break;
     }
     return staffrelBasic;
+}
+
+bool Att::IsMensuralType(data_NOTATIONTYPE notationType)
+{
+    return (notationType == NOTATIONTYPE_mensural || notationType == NOTATIONTYPE_mensural_white
+        || notationType == NOTATIONTYPE_mensural_black);
+}
+
+bool Att::IsNeumeType(data_NOTATIONTYPE notationType)
+{
+    // Maybe one day we will have other neume types too
+    return (notationType == NOTATIONTYPE_neume);
+}
+
+bool Att::IsTabType(data_NOTATIONTYPE notationType)
+{
+    // Next version of MEI will have other tab types
+    return (notationType == NOTATIONTYPE_tab);
 }
 
 } // namespace vrv

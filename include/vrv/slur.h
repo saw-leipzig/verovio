@@ -17,7 +17,11 @@ namespace vrv {
 // Slur
 //----------------------------------------------------------------------------
 
-class Slur : public ControlElement, public TimeSpanningInterface, public AttColor, public AttCurvature {
+class Slur : public ControlElement,
+             public TimeSpanningInterface,
+             public AttColor,
+             public AttCurvature,
+             public AttCurveRend {
 public:
     /**
      * @name Constructors, destructors, reset and class name methods
@@ -48,13 +52,6 @@ public:
     void SetDrawingCurvedir(curvature_CURVEDIR curvedir) { m_drawingCurvedir = curvedir; }
     bool HasDrawingCurvedir() const { return (m_drawingCurvedir != curvature_CURVEDIR_NONE); }
     ///@}
-
-    /**
-     * Check if the slur needs to be taken into account as overflow above or below in case of cross-staff end points.
-     * This methods assumes staff@n to be greater for the staff below.
-     */
-    void GetCrossStaffOverflows(
-        StaffAlignment *alignment, curvature_CURVEDIR cuvreDir, bool &skipAbove, bool &skipBelow);
 
     bool AdjustSlur(Doc *doc, FloatingCurvePositioner *curve, Staff *staff);
 

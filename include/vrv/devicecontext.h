@@ -97,7 +97,7 @@ public:
      */
     ///@{
     void SetBrush(int colour, int opacity);
-    void SetPen(int colour, int width, int opacity, int dashLength = 0);
+    void SetPen(int colour, int width, int opacity, int dashLength = 0, int lineCap = 0);
     void SetFont(FontInfo *font);
     void ResetBrush();
     void ResetPen();
@@ -136,6 +136,7 @@ public:
      * @name Drawing methods
      */
     ///@{
+    virtual void DrawSimpleBezierPath(Point bezier[4]) = 0;
     virtual void DrawComplexBezierPath(Point bezier1[4], Point bezier2[4]) = 0;
     virtual void DrawCircle(int x, int y, int radius) = 0;
     virtual void DrawEllipse(int x, int y, int width, int height) = 0;
@@ -145,7 +146,7 @@ public:
         = 0;
     virtual void DrawRectangle(int x, int y, int width, int height) = 0;
     virtual void DrawRotatedText(const std::string &text, int x, int y, double angle) = 0;
-    virtual void DrawRoundedRectangle(int x, int y, int width, int height, double radius) = 0;
+    virtual void DrawRoundedRectangle(int x, int y, int width, int height, int radius) = 0;
     virtual void DrawText(const std::string &text, const std::wstring wtext = L"", int x = VRV_UNSET, int y = VRV_UNSET)
         = 0;
     virtual void DrawMusicText(const std::wstring &text, int x, int y, bool setSmuflGlyph = false) = 0;
@@ -198,7 +199,9 @@ public:
      * For example, the method can be used for grouping shapes in <g></g> in SVG
      */
     ///@{
-    virtual void StartGraphic(Object *object, std::string gClass, std::string gId, bool preprend = false) = 0;
+    virtual void StartGraphic(
+        Object *object, std::string gClass, std::string gId, bool primary = true, bool preprend = false)
+        = 0;
     virtual void EndGraphic(Object *object, View *view) = 0;
     ///@}
 

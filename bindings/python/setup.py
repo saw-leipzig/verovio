@@ -4,19 +4,18 @@
 setup.py file for Verovio
 """
 
-
-from setuptools import setup, Extension
 from glob import glob
+import os
 import platform
+from setuptools import setup, Extension
 
 # generate the git commit include file
-import os
-os.system("../../tools/get_git_commit.sh")
+os.system("cd ..;../tools/get_git_commit.sh")
 
 
 EXTRA_COMPILE_ARGS = ['-DPYTHON_BINDING']
 if platform.system() != 'Windows':
-    EXTRA_COMPILE_ARGS += ['-std=c++11',
+    EXTRA_COMPILE_ARGS += ['-std=c++17',
                            '-Wno-write-strings', '-Wno-overloaded-virtual']
 else:
     EXTRA_COMPILE_ARGS += ['-DNO_PAE_SUPPORT']
@@ -62,7 +61,7 @@ verovio_module = Extension('_verovio',
                            )
 
 setup(name='verovio',
-      version='2.0.0',
+      version='2.7.2',
       url="www.verovio.org",
       description="""A library and toolkit for engraving MEI music notation into SVG""",
       ext_modules=[verovio_module],

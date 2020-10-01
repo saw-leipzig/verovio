@@ -21,6 +21,7 @@
 #include "slur.h"
 #include "staff.h"
 #include "staffdef.h"
+#include "tie.h"
 #include "vrv.h"
 
 namespace vrv {
@@ -303,7 +304,7 @@ void StaffAlignment::ReAdjustFloatingPositionersGrps(AdjustFloatingPositionerGrp
             if (params->m_place == STAFFREL_above) {
                 int iterY = yRel - (*iter)->GetContentY2()
                     - (params->m_doc->GetTopMargin((*iter)->GetObject()->GetClassId())
-                          * params->m_doc->GetDrawingUnit(this->GetStaffSize()));
+                        * params->m_doc->GetDrawingUnit(this->GetStaffSize()));
                 if (nextYRel > iterY) {
                     nextYRel = iterY;
                 }
@@ -311,7 +312,7 @@ void StaffAlignment::ReAdjustFloatingPositionersGrps(AdjustFloatingPositionerGrp
             else {
                 int iterY = yRel + (*iter)->GetContentY2()
                     + (params->m_doc->GetBottomMargin((*iter)->GetObject()->GetClassId())
-                          * params->m_doc->GetDrawingUnit(this->GetStaffSize()));
+                        * params->m_doc->GetDrawingUnit(this->GetStaffSize()));
                 if (nextYRel < iterY) {
                     nextYRel = iterY;
                 }
@@ -370,6 +371,11 @@ int StaffAlignment::AdjustFloatingPositioners(FunctorParams *functorParams)
                 Slur *slur = dynamic_cast<Slur *>((*iter)->GetObject());
                 assert(slur);
                 slur->GetCrossStaffOverflows(this, curve->GetDir(), skipAbove, skipBelow);
+            }
+            else if ((*iter)->GetObject()->Is(TIE)) {
+                Tie *tie = dynamic_cast<Tie *>((*iter)->GetObject());
+                assert(tie);
+                tie->GetCrossStaffOverflows(this, curve->GetDir(), skipAbove, skipBelow);
             }
 
             int overflowAbove = 0;

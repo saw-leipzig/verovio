@@ -186,19 +186,19 @@ bool System::HasMixedDrawingStemDir(LayerElement *start, LayerElement *end)
     ClassIdsComparison matchType({ CHORD, NOTE });
     ArrayOfObjects children;
     ArrayOfObjects::iterator childrenIter;
-    this->FindAllChildBetween(&children, &matchType, start, end);
+    this->FindAllDescendantBetween(&children, &matchType, start, end);
 
-    Layer *layerStart = dynamic_cast<Layer *>(start->GetFirstParent(LAYER));
+    Layer *layerStart = dynamic_cast<Layer *>(start->GetFirstAncestor(LAYER));
     assert(layerStart);
-    Staff *staffStart = dynamic_cast<Staff *>(layerStart->GetFirstParent(STAFF));
+    Staff *staffStart = dynamic_cast<Staff *>(layerStart->GetFirstAncestor(STAFF));
     assert(staffStart);
 
     data_STEMDIRECTION stemDir = STEMDIRECTION_NONE;
 
     for (childrenIter = children.begin(); childrenIter != children.end(); ++childrenIter) {
-        Layer *layer = dynamic_cast<Layer *>((*childrenIter)->GetFirstParent(LAYER));
+        Layer *layer = dynamic_cast<Layer *>((*childrenIter)->GetFirstAncestor(LAYER));
         assert(layer);
-        Staff *staff = dynamic_cast<Staff *>((*childrenIter)->GetFirstParent(STAFF));
+        Staff *staff = dynamic_cast<Staff *>((*childrenIter)->GetFirstAncestor(STAFF));
         assert(staff);
 
         // If the slur is spanning over several measure, the the children list will include note and chords
@@ -230,7 +230,7 @@ void System::AddToDrawingListIfNeccessary(Object *object)
 
     if (!object->HasInterface(INTERFACE_TIME_SPANNING)) return;
 
-    if (object->Is({ BRACKETSPAN, FIGURE, HAIRPIN, OCTAVE, SLUR, SYL, TIE })) {
+    if (object->Is({ BRACKETSPAN, FIGURE, GLISS, HAIRPIN, OCTAVE, SLUR, SYL, TIE })) {
         this->AddToDrawingList(object);
     }
     else if (object->Is(DIR)) {
@@ -250,7 +250,7 @@ void System::AddToDrawingListIfNeccessary(Object *object)
     else if (object->Is(TRILL)) {
         Trill *trill = dynamic_cast<Trill *>(object);
         assert(trill);
-        if (trill->GetEnd()) {
+        if (trill->GetEnd() && (trill->GetExtender() != BOOLEAN_false)) {
             this->AddToDrawingList(trill);
         }
     }
@@ -281,7 +281,9 @@ int System::OptimizeScoreDef(FunctorParams *functorParams)
 
     if (params->m_firstScoreDef) {
         params->m_firstScoreDef = false;
-        return FUNCTOR_SIBLINGS;
+        if (!params->m_doc->GetOptions()->m_condenseFirstPage.GetValue()) {
+            return FUNCTOR_SIBLINGS;
+        }
     }
 
     params->m_currentScoreDef = this->GetDrawingScoreDef();
@@ -400,7 +402,7 @@ int System::AdjustXOverflowEnd(FunctorParams *functorParams)
         return FUNCTOR_CONTINUE;
     }
     Alignment *left = objectX->GetAlignment();
-    Measure *objectXMeasure = dynamic_cast<Measure *>(objectX->GetFirstParent(MEASURE));
+    Measure *objectXMeasure = dynamic_cast<Measure *>(objectX->GetFirstAncestor(MEASURE));
     if (objectXMeasure != params->m_lastMeasure) {
         left = params->m_lastMeasure->GetLeftBarLine()->GetAlignment();
     }
@@ -652,6 +654,9 @@ int System::AdjustFloatingPositioners(FunctorParams *functorParams)
     AdjustFloatingPositionerGrpsParams adjustFloatingPositionerGrpsParams(params->m_doc);
     Functor adjustFloatingPositionerGrps(&Object::AdjustFloatingPositionerGrps);
 
+    params->m_classId = GLISS;
+    m_systemAligner.Process(params->m_functor, params);
+
     params->m_classId = TIE;
     m_systemAligner.Process(params->m_functor, params);
 
@@ -735,6 +740,9 @@ int System::AdjustFloatingPositioners(FunctorParams *functorParams)
     m_systemAligner.Process(&adjustFloatingPositionerGrps, &adjustFloatingPositionerGrpsParams);
     adjustFloatingPositionerGrpsParams.m_place = STAFFREL_below;
     m_systemAligner.Process(&adjustFloatingPositionerGrps, &adjustFloatingPositionerGrpsParams);
+
+    params->m_classId = REH;
+    m_systemAligner.Process(params->m_functor, params);
 
     // SYL check if they are some lyrics and make space for them if any
     params->m_classId = SYL;

@@ -49,7 +49,7 @@ std::string AttConverter::AccidentalGesturalToStr(data_ACCIDENTAL_GESTURAL data)
     return value;
 }
 
-data_ACCIDENTAL_GESTURAL AttConverter::StrToAccidentalGestural(std::string value, bool logWarning) const
+data_ACCIDENTAL_GESTURAL AttConverter::StrToAccidentalGestural(const std::string &value, bool logWarning) const
 {
     if (value == "s") return ACCIDENTAL_GESTURAL_s;
     if (value == "f") return ACCIDENTAL_GESTURAL_f;
@@ -99,7 +99,7 @@ std::string AttConverter::AccidentalWrittenToStr(data_ACCIDENTAL_WRITTEN data) c
     return value;
 }
 
-data_ACCIDENTAL_WRITTEN AttConverter::StrToAccidentalWritten(std::string value, bool logWarning) const
+data_ACCIDENTAL_WRITTEN AttConverter::StrToAccidentalWritten(const std::string &value, bool logWarning) const
 {
     if (value == "s") return ACCIDENTAL_WRITTEN_s;
     if (value == "f") return ACCIDENTAL_WRITTEN_f;
@@ -173,7 +173,7 @@ std::string AttConverter::ArticulationToStr(data_ARTICULATION data) const
     return value;
 }
 
-data_ARTICULATION AttConverter::StrToArticulation(std::string value, bool logWarning) const
+data_ARTICULATION AttConverter::StrToArticulation(const std::string &value, bool logWarning) const
 {
     if (value == "acc") return ARTICULATION_acc;
     if (value == "stacc") return ARTICULATION_stacc;
@@ -228,7 +228,7 @@ std::string AttConverter::BarmethodToStr(data_BARMETHOD data) const
     return value;
 }
 
-data_BARMETHOD AttConverter::StrToBarmethod(std::string value, bool logWarning) const
+data_BARMETHOD AttConverter::StrToBarmethod(const std::string &value, bool logWarning) const
 {
     if (value == "mensur") return BARMETHOD_mensur;
     if (value == "staff") return BARMETHOD_staff;
@@ -261,7 +261,7 @@ std::string AttConverter::BarrenditionToStr(data_BARRENDITION data) const
     return value;
 }
 
-data_BARRENDITION AttConverter::StrToBarrendition(std::string value, bool logWarning) const
+data_BARRENDITION AttConverter::StrToBarrendition(const std::string &value, bool logWarning) const
 {
     if (value == "dashed") return BARRENDITION_dashed;
     if (value == "dotted") return BARRENDITION_dotted;
@@ -294,7 +294,7 @@ std::string AttConverter::BeamplaceToStr(data_BEAMPLACE data) const
     return value;
 }
 
-data_BEAMPLACE AttConverter::StrToBeamplace(std::string value, bool logWarning) const
+data_BEAMPLACE AttConverter::StrToBeamplace(const std::string &value, bool logWarning) const
 {
     if (value == "above") return BEAMPLACE_above;
     if (value == "below") return BEAMPLACE_below;
@@ -329,7 +329,7 @@ std::string AttConverter::BetypeToStr(data_BETYPE data) const
     return value;
 }
 
-data_BETYPE AttConverter::StrToBetype(std::string value, bool logWarning) const
+data_BETYPE AttConverter::StrToBetype(const std::string &value, bool logWarning) const
 {
     if (value == "byte") return BETYPE_byte;
     if (value == "smil") return BETYPE_smil;
@@ -363,7 +363,7 @@ std::string AttConverter::BooleanToStr(data_BOOLEAN data) const
     return value;
 }
 
-data_BOOLEAN AttConverter::StrToBoolean(std::string value, bool logWarning) const
+data_BOOLEAN AttConverter::StrToBoolean(const std::string &value, bool logWarning) const
 {
     if (value == "true") return BOOLEAN_true;
     if (value == "false") return BOOLEAN_false;
@@ -388,7 +388,7 @@ std::string AttConverter::CertaintyToStr(data_CERTAINTY data) const
     return value;
 }
 
-data_CERTAINTY AttConverter::StrToCertainty(std::string value, bool logWarning) const
+data_CERTAINTY AttConverter::StrToCertainty(const std::string &value, bool logWarning) const
 {
     if (value == "high") return CERTAINTY_high;
     if (value == "medium") return CERTAINTY_medium;
@@ -417,7 +417,7 @@ std::string AttConverter::ClefshapeToStr(data_CLEFSHAPE data) const
     return value;
 }
 
-data_CLEFSHAPE AttConverter::StrToClefshape(std::string value, bool logWarning) const
+data_CLEFSHAPE AttConverter::StrToClefshape(const std::string &value, bool logWarning) const
 {
     if (value == "G") return CLEFSHAPE_G;
     if (value == "GG") return CLEFSHAPE_GG;
@@ -445,7 +445,7 @@ std::string AttConverter::ClusterToStr(data_CLUSTER data) const
     return value;
 }
 
-data_CLUSTER AttConverter::StrToCluster(std::string value, bool logWarning) const
+data_CLUSTER AttConverter::StrToCluster(const std::string &value, bool logWarning) const
 {
     if (value == "white") return CLUSTER_white;
     if (value == "black") return CLUSTER_black;
@@ -578,6 +578,7 @@ std::string AttConverter::ColornamesToStr(data_COLORNAMES data) const
         case COLORNAMES_plum: value = "plum"; break;
         case COLORNAMES_powderblue: value = "powderblue"; break;
         case COLORNAMES_purple: value = "purple"; break;
+        case COLORNAMES_rebeccapurple: value = "rebeccapurple"; break;
         case COLORNAMES_red: value = "red"; break;
         case COLORNAMES_rosybrown: value = "rosybrown"; break;
         case COLORNAMES_royalblue: value = "royalblue"; break;
@@ -614,7 +615,7 @@ std::string AttConverter::ColornamesToStr(data_COLORNAMES data) const
     return value;
 }
 
-data_COLORNAMES AttConverter::StrToColornames(std::string value, bool logWarning) const
+data_COLORNAMES AttConverter::StrToColornames(const std::string &value, bool logWarning) const
 {
     if (value == "aliceblue") return COLORNAMES_aliceblue;
     if (value == "antiquewhite") return COLORNAMES_antiquewhite;
@@ -735,6 +736,7 @@ data_COLORNAMES AttConverter::StrToColornames(std::string value, bool logWarning
     if (value == "plum") return COLORNAMES_plum;
     if (value == "powderblue") return COLORNAMES_powderblue;
     if (value == "purple") return COLORNAMES_purple;
+    if (value == "rebeccapurple") return COLORNAMES_rebeccapurple;
     if (value == "red") return COLORNAMES_red;
     if (value == "rosybrown") return COLORNAMES_rosybrown;
     if (value == "royalblue") return COLORNAMES_royalblue;
@@ -788,7 +790,7 @@ std::string AttConverter::CompassdirectionToStr(data_COMPASSDIRECTION data) cons
     return value;
 }
 
-data_COMPASSDIRECTION AttConverter::StrToCompassdirection(std::string value, bool logWarning) const
+data_COMPASSDIRECTION AttConverter::StrToCompassdirection(const std::string &value, bool logWarning) const
 {
     if (value == "n") return COMPASSDIRECTION_n;
     if (value == "e") return COMPASSDIRECTION_e;
@@ -819,7 +821,7 @@ std::string AttConverter::CompassdirectionBasicToStr(data_COMPASSDIRECTION_basic
     return value;
 }
 
-data_COMPASSDIRECTION_basic AttConverter::StrToCompassdirectionBasic(std::string value, bool logWarning) const
+data_COMPASSDIRECTION_basic AttConverter::StrToCompassdirectionBasic(const std::string &value, bool logWarning) const
 {
     if (value == "n") return COMPASSDIRECTION_basic_n;
     if (value == "e") return COMPASSDIRECTION_basic_e;
@@ -846,7 +848,7 @@ std::string AttConverter::CompassdirectionExtendedToStr(data_COMPASSDIRECTION_ex
     return value;
 }
 
-data_COMPASSDIRECTION_extended AttConverter::StrToCompassdirectionExtended(std::string value, bool logWarning) const
+data_COMPASSDIRECTION_extended AttConverter::StrToCompassdirectionExtended(const std::string &value, bool logWarning) const
 {
     if (value == "ne") return COMPASSDIRECTION_extended_ne;
     if (value == "nw") return COMPASSDIRECTION_extended_nw;
@@ -871,7 +873,7 @@ std::string AttConverter::EnclosureToStr(data_ENCLOSURE data) const
     return value;
 }
 
-data_ENCLOSURE AttConverter::StrToEnclosure(std::string value, bool logWarning) const
+data_ENCLOSURE AttConverter::StrToEnclosure(const std::string &value, bool logWarning) const
 {
     if (value == "paren") return ENCLOSURE_paren;
     if (value == "brack") return ENCLOSURE_brack;
@@ -900,7 +902,7 @@ std::string AttConverter::EventrelToStr(data_EVENTREL data) const
     return value;
 }
 
-data_EVENTREL AttConverter::StrToEventrel(std::string value, bool logWarning) const
+data_EVENTREL AttConverter::StrToEventrel(const std::string &value, bool logWarning) const
 {
     if (value == "above") return EVENTREL_above;
     if (value == "below") return EVENTREL_below;
@@ -931,7 +933,7 @@ std::string AttConverter::EventrelBasicToStr(data_EVENTREL_basic data) const
     return value;
 }
 
-data_EVENTREL_basic AttConverter::StrToEventrelBasic(std::string value, bool logWarning) const
+data_EVENTREL_basic AttConverter::StrToEventrelBasic(const std::string &value, bool logWarning) const
 {
     if (value == "above") return EVENTREL_basic_above;
     if (value == "below") return EVENTREL_basic_below;
@@ -958,7 +960,7 @@ std::string AttConverter::EventrelExtendedToStr(data_EVENTREL_extended data) con
     return value;
 }
 
-data_EVENTREL_extended AttConverter::StrToEventrelExtended(std::string value, bool logWarning) const
+data_EVENTREL_extended AttConverter::StrToEventrelExtended(const std::string &value, bool logWarning) const
 {
     if (value == "above-left") return EVENTREL_extended_above_left;
     if (value == "above-right") return EVENTREL_extended_above_right;
@@ -987,7 +989,7 @@ std::string AttConverter::FillToStr(data_FILL data) const
     return value;
 }
 
-data_FILL AttConverter::StrToFill(std::string value, bool logWarning) const
+data_FILL AttConverter::StrToFill(const std::string &value, bool logWarning) const
 {
     if (value == "void") return FILL_void;
     if (value == "solid") return FILL_solid;
@@ -1021,7 +1023,7 @@ std::string AttConverter::FontsizetermToStr(data_FONTSIZETERM data) const
     return value;
 }
 
-data_FONTSIZETERM AttConverter::StrToFontsizeterm(std::string value, bool logWarning) const
+data_FONTSIZETERM AttConverter::StrToFontsizeterm(const std::string &value, bool logWarning) const
 {
     if (value == "xx-small") return FONTSIZETERM_xx_small;
     if (value == "x-small") return FONTSIZETERM_x_small;
@@ -1052,7 +1054,7 @@ std::string AttConverter::FontstyleToStr(data_FONTSTYLE data) const
     return value;
 }
 
-data_FONTSTYLE AttConverter::StrToFontstyle(std::string value, bool logWarning) const
+data_FONTSTYLE AttConverter::StrToFontstyle(const std::string &value, bool logWarning) const
 {
     if (value == "italic") return FONTSTYLE_italic;
     if (value == "normal") return FONTSTYLE_normal;
@@ -1076,7 +1078,7 @@ std::string AttConverter::FontweightToStr(data_FONTWEIGHT data) const
     return value;
 }
 
-data_FONTWEIGHT AttConverter::StrToFontweight(std::string value, bool logWarning) const
+data_FONTWEIGHT AttConverter::StrToFontweight(const std::string &value, bool logWarning) const
 {
     if (value == "bold") return FONTWEIGHT_bold;
     if (value == "normal") return FONTWEIGHT_normal;
@@ -1133,7 +1135,7 @@ std::string AttConverter::FrbrrelationshipToStr(data_FRBRRELATIONSHIP data) cons
     return value;
 }
 
-data_FRBRRELATIONSHIP AttConverter::StrToFrbrrelationship(std::string value, bool logWarning) const
+data_FRBRRELATIONSHIP AttConverter::StrToFrbrrelationship(const std::string &value, bool logWarning) const
 {
     if (value == "hasAbridgement") return FRBRRELATIONSHIP_hasAbridgement;
     if (value == "isAbridgementOf") return FRBRRELATIONSHIP_isAbridgementOf;
@@ -1191,7 +1193,7 @@ std::string AttConverter::GlissandoToStr(data_GLISSANDO data) const
     return value;
 }
 
-data_GLISSANDO AttConverter::StrToGlissando(std::string value, bool logWarning) const
+data_GLISSANDO AttConverter::StrToGlissando(const std::string &value, bool logWarning) const
 {
     if (value == "i") return GLISSANDO_i;
     if (value == "m") return GLISSANDO_m;
@@ -1216,7 +1218,7 @@ std::string AttConverter::GraceToStr(data_GRACE data) const
     return value;
 }
 
-data_GRACE AttConverter::StrToGrace(std::string value, bool logWarning) const
+data_GRACE AttConverter::StrToGrace(const std::string &value, bool logWarning) const
 {
     if (value == "acc") return GRACE_acc;
     if (value == "unacc") return GRACE_unacc;
@@ -1254,7 +1256,7 @@ std::string AttConverter::HeadshapeToStr(data_HEADSHAPE data) const
     return value;
 }
 
-data_HEADSHAPE AttConverter::StrToHeadshape(std::string value, bool logWarning) const
+data_HEADSHAPE AttConverter::StrToHeadshape(const std::string &value, bool logWarning) const
 {
     if (value == "quarter") return HEADSHAPE_quarter;
     if (value == "half") return HEADSHAPE_half;
@@ -1305,7 +1307,7 @@ std::string AttConverter::HeadshapeListToStr(data_HEADSHAPE_list data) const
     return value;
 }
 
-data_HEADSHAPE_list AttConverter::StrToHeadshapeList(std::string value, bool logWarning) const
+data_HEADSHAPE_list AttConverter::StrToHeadshapeList(const std::string &value, bool logWarning) const
 {
     if (value == "quarter") return HEADSHAPE_list_quarter;
     if (value == "half") return HEADSHAPE_list_half;
@@ -1344,7 +1346,7 @@ std::string AttConverter::HorizontalalignmentToStr(data_HORIZONTALALIGNMENT data
     return value;
 }
 
-data_HORIZONTALALIGNMENT AttConverter::StrToHorizontalalignment(std::string value, bool logWarning) const
+data_HORIZONTALALIGNMENT AttConverter::StrToHorizontalalignment(const std::string &value, bool logWarning) const
 {
     if (value == "left") return HORIZONTALALIGNMENT_left;
     if (value == "right") return HORIZONTALALIGNMENT_right;
@@ -1372,7 +1374,7 @@ std::string AttConverter::LayerschemeToStr(data_LAYERSCHEME data) const
     return value;
 }
 
-data_LAYERSCHEME AttConverter::StrToLayerscheme(std::string value, bool logWarning) const
+data_LAYERSCHEME AttConverter::StrToLayerscheme(const std::string &value, bool logWarning) const
 {
     if (value == "1") return LAYERSCHEME_1;
     if (value == "2o") return LAYERSCHEME_2o;
@@ -1398,7 +1400,7 @@ std::string AttConverter::LigatureformToStr(data_LIGATUREFORM data) const
     return value;
 }
 
-data_LIGATUREFORM AttConverter::StrToLigatureform(std::string value, bool logWarning) const
+data_LIGATUREFORM AttConverter::StrToLigatureform(const std::string &value, bool logWarning) const
 {
     if (value == "recta") return LIGATUREFORM_recta;
     if (value == "obliqua") return LIGATUREFORM_obliqua;
@@ -1423,7 +1425,7 @@ std::string AttConverter::LineformToStr(data_LINEFORM data) const
     return value;
 }
 
-data_LINEFORM AttConverter::StrToLineform(std::string value, bool logWarning) const
+data_LINEFORM AttConverter::StrToLineform(const std::string &value, bool logWarning) const
 {
     if (value == "dashed") return LINEFORM_dashed;
     if (value == "dotted") return LINEFORM_dotted;
@@ -1466,7 +1468,7 @@ std::string AttConverter::LinestartendsymbolToStr(data_LINESTARTENDSYMBOL data) 
     return value;
 }
 
-data_LINESTARTENDSYMBOL AttConverter::StrToLinestartendsymbol(std::string value, bool logWarning) const
+data_LINESTARTENDSYMBOL AttConverter::StrToLinestartendsymbol(const std::string &value, bool logWarning) const
 {
     if (value == "angledown") return LINESTARTENDSYMBOL_angledown;
     if (value == "angleup") return LINESTARTENDSYMBOL_angleup;
@@ -1508,7 +1510,7 @@ std::string AttConverter::LinewidthtermToStr(data_LINEWIDTHTERM data) const
     return value;
 }
 
-data_LINEWIDTHTERM AttConverter::StrToLinewidthterm(std::string value, bool logWarning) const
+data_LINEWIDTHTERM AttConverter::StrToLinewidthterm(const std::string &value, bool logWarning) const
 {
     if (value == "narrow") return LINEWIDTHTERM_narrow;
     if (value == "medium") return LINEWIDTHTERM_medium;
@@ -1558,7 +1560,7 @@ std::string AttConverter::MelodicfunctionToStr(data_MELODICFUNCTION data) const
     return value;
 }
 
-data_MELODICFUNCTION AttConverter::StrToMelodicfunction(std::string value, bool logWarning) const
+data_MELODICFUNCTION AttConverter::StrToMelodicfunction(const std::string &value, bool logWarning) const
 {
     if (value == "aln") return MELODICFUNCTION_aln;
     if (value == "ant") return MELODICFUNCTION_ant;
@@ -1607,13 +1609,40 @@ std::string AttConverter::MensurationsignToStr(data_MENSURATIONSIGN data) const
     return value;
 }
 
-data_MENSURATIONSIGN AttConverter::StrToMensurationsign(std::string value, bool logWarning) const
+data_MENSURATIONSIGN AttConverter::StrToMensurationsign(const std::string &value, bool logWarning) const
 {
     if (value == "C") return MENSURATIONSIGN_C;
     if (value == "O") return MENSURATIONSIGN_O;
     if (logWarning && !value.empty())
         LogWarning("Unsupported value '%s' for data.MENSURATIONSIGN", value.c_str());
     return MENSURATIONSIGN_NONE;
+}
+
+std::string AttConverter::MeterformToStr(data_METERFORM data) const
+{
+    std::string value;
+    switch (data) {
+        case METERFORM_num: value = "num"; break;
+        case METERFORM_denomsym: value = "denomsym"; break;
+        case METERFORM_norm: value = "norm"; break;
+        case METERFORM_invis: value = "invis"; break;
+        default:
+            LogWarning("Unknown value '%d' for data.METERFORM", data);
+            value = "";
+            break;
+    }
+    return value;
+}
+
+data_METERFORM AttConverter::StrToMeterform(const std::string &value, bool logWarning) const
+{
+    if (value == "num") return METERFORM_num;
+    if (value == "denomsym") return METERFORM_denomsym;
+    if (value == "norm") return METERFORM_norm;
+    if (value == "invis") return METERFORM_invis;
+    if (logWarning && !value.empty())
+        LogWarning("Unsupported value '%s' for data.METERFORM", value.c_str());
+    return METERFORM_NONE;
 }
 
 std::string AttConverter::MetersignToStr(data_METERSIGN data) const
@@ -1630,7 +1659,7 @@ std::string AttConverter::MetersignToStr(data_METERSIGN data) const
     return value;
 }
 
-data_METERSIGN AttConverter::StrToMetersign(std::string value, bool logWarning) const
+data_METERSIGN AttConverter::StrToMetersign(const std::string &value, bool logWarning) const
 {
     if (value == "common") return METERSIGN_common;
     if (value == "cut") return METERSIGN_cut;
@@ -1826,7 +1855,7 @@ std::string AttConverter::MidinamesToStr(data_MIDINAMES data) const
     return value;
 }
 
-data_MIDINAMES AttConverter::StrToMidinames(std::string value, bool logWarning) const
+data_MIDINAMES AttConverter::StrToMidinames(const std::string &value, bool logWarning) const
 {
     if (value == "Acoustic_Grand_Piano") return MIDINAMES_Acoustic_Grand_Piano;
     if (value == "Bright_Acoustic_Piano") return MIDINAMES_Bright_Acoustic_Piano;
@@ -2028,7 +2057,7 @@ std::string AttConverter::ModeToStr(data_MODE data) const
     return value;
 }
 
-data_MODE AttConverter::StrToMode(std::string value, bool logWarning) const
+data_MODE AttConverter::StrToMode(const std::string &value, bool logWarning) const
 {
     if (value == "major") return MODE_major;
     if (value == "minor") return MODE_minor;
@@ -2064,7 +2093,7 @@ std::string AttConverter::ModsrelationshipToStr(data_MODSRELATIONSHIP data) cons
     return value;
 }
 
-data_MODSRELATIONSHIP AttConverter::StrToModsrelationship(std::string value, bool logWarning) const
+data_MODSRELATIONSHIP AttConverter::StrToModsrelationship(const std::string &value, bool logWarning) const
 {
     if (value == "preceding") return MODSRELATIONSHIP_preceding;
     if (value == "succeeding") return MODSRELATIONSHIP_succeeding;
@@ -2105,7 +2134,7 @@ std::string AttConverter::NonstaffplaceToStr(data_NONSTAFFPLACE data) const
     return value;
 }
 
-data_NONSTAFFPLACE AttConverter::StrToNonstaffplace(std::string value, bool logWarning) const
+data_NONSTAFFPLACE AttConverter::StrToNonstaffplace(const std::string &value, bool logWarning) const
 {
     if (value == "botmar") return NONSTAFFPLACE_botmar;
     if (value == "topmar") return NONSTAFFPLACE_topmar;
@@ -2143,7 +2172,7 @@ std::string AttConverter::NotationtypeToStr(data_NOTATIONTYPE data) const
     return value;
 }
 
-data_NOTATIONTYPE AttConverter::StrToNotationtype(std::string value, bool logWarning) const
+data_NOTATIONTYPE AttConverter::StrToNotationtype(const std::string &value, bool logWarning) const
 {
     if (value == "cmn") return NOTATIONTYPE_cmn;
     if (value == "mensural") return NOTATIONTYPE_mensural;
@@ -2178,7 +2207,7 @@ std::string AttConverter::NoteheadmodifierToStr(data_NOTEHEADMODIFIER data) cons
     return value;
 }
 
-data_NOTEHEADMODIFIER AttConverter::StrToNoteheadmodifier(std::string value, bool logWarning) const
+data_NOTEHEADMODIFIER AttConverter::StrToNoteheadmodifier(const std::string &value, bool logWarning) const
 {
     if (value == "slash") return NOTEHEADMODIFIER_slash;
     if (value == "backslash") return NOTEHEADMODIFIER_backslash;
@@ -2217,7 +2246,7 @@ std::string AttConverter::NoteheadmodifierListToStr(data_NOTEHEADMODIFIER_list d
     return value;
 }
 
-data_NOTEHEADMODIFIER_list AttConverter::StrToNoteheadmodifierList(std::string value, bool logWarning) const
+data_NOTEHEADMODIFIER_list AttConverter::StrToNoteheadmodifierList(const std::string &value, bool logWarning) const
 {
     if (value == "slash") return NOTEHEADMODIFIER_list_slash;
     if (value == "backslash") return NOTEHEADMODIFIER_list_backslash;
@@ -2248,7 +2277,7 @@ std::string AttConverter::OtherstaffToStr(data_OTHERSTAFF data) const
     return value;
 }
 
-data_OTHERSTAFF AttConverter::StrToOtherstaff(std::string value, bool logWarning) const
+data_OTHERSTAFF AttConverter::StrToOtherstaff(const std::string &value, bool logWarning) const
 {
     if (value == "above") return OTHERSTAFF_above;
     if (value == "below") return OTHERSTAFF_below;
@@ -2314,7 +2343,7 @@ std::string AttConverter::RelationshipToStr(data_RELATIONSHIP data) const
     return value;
 }
 
-data_RELATIONSHIP AttConverter::StrToRelationship(std::string value, bool logWarning) const
+data_RELATIONSHIP AttConverter::StrToRelationship(const std::string &value, bool logWarning) const
 {
     if (value == "hasAbridgement") return RELATIONSHIP_hasAbridgement;
     if (value == "isAbridgementOf") return RELATIONSHIP_isAbridgementOf;
@@ -2385,7 +2414,7 @@ std::string AttConverter::RotationToStr(data_ROTATION data) const
     return value;
 }
 
-data_ROTATION AttConverter::StrToRotation(std::string value, bool logWarning) const
+data_ROTATION AttConverter::StrToRotation(const std::string &value, bool logWarning) const
 {
     if (value == "none") return ROTATION_none;
     if (value == "down") return ROTATION_down;
@@ -2418,7 +2447,7 @@ std::string AttConverter::RotationdirectionToStr(data_ROTATIONDIRECTION data) co
     return value;
 }
 
-data_ROTATIONDIRECTION AttConverter::StrToRotationdirection(std::string value, bool logWarning) const
+data_ROTATIONDIRECTION AttConverter::StrToRotationdirection(const std::string &value, bool logWarning) const
 {
     if (value == "none") return ROTATIONDIRECTION_none;
     if (value == "down") return ROTATIONDIRECTION_down;
@@ -2473,7 +2502,7 @@ std::string AttConverter::StaffitemToStr(data_STAFFITEM data) const
     return value;
 }
 
-data_STAFFITEM AttConverter::StrToStaffitem(std::string value, bool logWarning) const
+data_STAFFITEM AttConverter::StrToStaffitem(const std::string &value, bool logWarning) const
 {
     if (value == "accid") return STAFFITEM_accid;
     if (value == "annot") return STAFFITEM_annot;
@@ -2531,7 +2560,7 @@ std::string AttConverter::StaffitemBasicToStr(data_STAFFITEM_basic data) const
     return value;
 }
 
-data_STAFFITEM_basic AttConverter::StrToStaffitemBasic(std::string value, bool logWarning) const
+data_STAFFITEM_basic AttConverter::StrToStaffitemBasic(const std::string &value, bool logWarning) const
 {
     if (value == "accid") return STAFFITEM_basic_accid;
     if (value == "annot") return STAFFITEM_basic_annot;
@@ -2578,7 +2607,7 @@ std::string AttConverter::StaffitemCmnToStr(data_STAFFITEM_cmn data) const
     return value;
 }
 
-data_STAFFITEM_cmn AttConverter::StrToStaffitemCmn(std::string value, bool logWarning) const
+data_STAFFITEM_cmn AttConverter::StrToStaffitemCmn(const std::string &value, bool logWarning) const
 {
     if (value == "beam") return STAFFITEM_cmn_beam;
     if (value == "bend") return STAFFITEM_cmn_bend;
@@ -2616,7 +2645,7 @@ std::string AttConverter::StaffitemMensuralToStr(data_STAFFITEM_mensural data) c
     return value;
 }
 
-data_STAFFITEM_mensural AttConverter::StrToStaffitemMensural(std::string value, bool logWarning) const
+data_STAFFITEM_mensural AttConverter::StrToStaffitemMensural(const std::string &value, bool logWarning) const
 {
     if (value == "ligature") return STAFFITEM_mensural_ligature;
     if (logWarning && !value.empty())
@@ -2640,7 +2669,7 @@ std::string AttConverter::StaffrelToStr(data_STAFFREL data) const
     return value;
 }
 
-data_STAFFREL AttConverter::StrToStaffrel(std::string value, bool logWarning) const
+data_STAFFREL AttConverter::StrToStaffrel(const std::string &value, bool logWarning) const
 {
     if (value == "above") return STAFFREL_above;
     if (value == "below") return STAFFREL_below;
@@ -2665,7 +2694,7 @@ std::string AttConverter::StaffrelBasicToStr(data_STAFFREL_basic data) const
     return value;
 }
 
-data_STAFFREL_basic AttConverter::StrToStaffrelBasic(std::string value, bool logWarning) const
+data_STAFFREL_basic AttConverter::StrToStaffrelBasic(const std::string &value, bool logWarning) const
 {
     if (value == "above") return STAFFREL_basic_above;
     if (value == "below") return STAFFREL_basic_below;
@@ -2688,7 +2717,7 @@ std::string AttConverter::StaffrelExtendedToStr(data_STAFFREL_extended data) con
     return value;
 }
 
-data_STAFFREL_extended AttConverter::StrToStaffrelExtended(std::string value, bool logWarning) const
+data_STAFFREL_extended AttConverter::StrToStaffrelExtended(const std::string &value, bool logWarning) const
 {
     if (value == "between") return STAFFREL_extended_between;
     if (value == "within") return STAFFREL_extended_within;
@@ -2717,7 +2746,7 @@ std::string AttConverter::StemdirectionToStr(data_STEMDIRECTION data) const
     return value;
 }
 
-data_STEMDIRECTION AttConverter::StrToStemdirection(std::string value, bool logWarning) const
+data_STEMDIRECTION AttConverter::StrToStemdirection(const std::string &value, bool logWarning) const
 {
     if (value == "up") return STEMDIRECTION_up;
     if (value == "down") return STEMDIRECTION_down;
@@ -2746,7 +2775,7 @@ std::string AttConverter::StemdirectionBasicToStr(data_STEMDIRECTION_basic data)
     return value;
 }
 
-data_STEMDIRECTION_basic AttConverter::StrToStemdirectionBasic(std::string value, bool logWarning) const
+data_STEMDIRECTION_basic AttConverter::StrToStemdirectionBasic(const std::string &value, bool logWarning) const
 {
     if (value == "up") return STEMDIRECTION_basic_up;
     if (value == "down") return STEMDIRECTION_basic_down;
@@ -2773,7 +2802,7 @@ std::string AttConverter::StemdirectionExtendedToStr(data_STEMDIRECTION_extended
     return value;
 }
 
-data_STEMDIRECTION_extended AttConverter::StrToStemdirectionExtended(std::string value, bool logWarning) const
+data_STEMDIRECTION_extended AttConverter::StrToStemdirectionExtended(const std::string &value, bool logWarning) const
 {
     if (value == "left") return STEMDIRECTION_extended_left;
     if (value == "right") return STEMDIRECTION_extended_right;
@@ -2807,7 +2836,7 @@ std::string AttConverter::StemmodifierToStr(data_STEMMODIFIER data) const
     return value;
 }
 
-data_STEMMODIFIER AttConverter::StrToStemmodifier(std::string value, bool logWarning) const
+data_STEMMODIFIER AttConverter::StrToStemmodifier(const std::string &value, bool logWarning) const
 {
     if (value == "none") return STEMMODIFIER_none;
     if (value == "1slash") return STEMMODIFIER_1slash;
@@ -2838,7 +2867,7 @@ std::string AttConverter::StempositionToStr(data_STEMPOSITION data) const
     return value;
 }
 
-data_STEMPOSITION AttConverter::StrToStemposition(std::string value, bool logWarning) const
+data_STEMPOSITION AttConverter::StrToStemposition(const std::string &value, bool logWarning) const
 {
     if (value == "left") return STEMPOSITION_left;
     if (value == "right") return STEMPOSITION_right;
@@ -2864,7 +2893,7 @@ std::string AttConverter::TemperamentToStr(data_TEMPERAMENT data) const
     return value;
 }
 
-data_TEMPERAMENT AttConverter::StrToTemperament(std::string value, bool logWarning) const
+data_TEMPERAMENT AttConverter::StrToTemperament(const std::string &value, bool logWarning) const
 {
     if (value == "equal") return TEMPERAMENT_equal;
     if (value == "just") return TEMPERAMENT_just;
@@ -2915,7 +2944,7 @@ std::string AttConverter::TextrenditionToStr(data_TEXTRENDITION data) const
     return value;
 }
 
-data_TEXTRENDITION AttConverter::StrToTextrendition(std::string value, bool logWarning) const
+data_TEXTRENDITION AttConverter::StrToTextrendition(const std::string &value, bool logWarning) const
 {
     if (value == "quote") return TEXTRENDITION_quote;
     if (value == "quotedbl") return TEXTRENDITION_quotedbl;
@@ -2990,7 +3019,7 @@ std::string AttConverter::TextrenditionlistToStr(data_TEXTRENDITIONLIST data) co
     return value;
 }
 
-data_TEXTRENDITIONLIST AttConverter::StrToTextrenditionlist(std::string value, bool logWarning) const
+data_TEXTRENDITIONLIST AttConverter::StrToTextrenditionlist(const std::string &value, bool logWarning) const
 {
     if (value == "quote") return TEXTRENDITIONLIST_quote;
     if (value == "quotedbl") return TEXTRENDITIONLIST_quotedbl;
@@ -3041,7 +3070,7 @@ std::string AttConverter::VerticalalignmentToStr(data_VERTICALALIGNMENT data) co
     return value;
 }
 
-data_VERTICALALIGNMENT AttConverter::StrToVerticalalignment(std::string value, bool logWarning) const
+data_VERTICALALIGNMENT AttConverter::StrToVerticalalignment(const std::string &value, bool logWarning) const
 {
     if (value == "top") return VERTICALALIGNMENT_top;
     if (value == "middle") return VERTICALALIGNMENT_middle;
@@ -3066,7 +3095,7 @@ std::string AttConverter::AccidLogFuncToStr(accidLog_FUNC data) const
     return value;
 }
 
-accidLog_FUNC AttConverter::StrToAccidLogFunc(std::string value, bool logWarning) const
+accidLog_FUNC AttConverter::StrToAccidLogFunc(const std::string &value, bool logWarning) const
 {
     if (value == "caution") return accidLog_FUNC_caution;
     if (value == "edit") return accidLog_FUNC_edit;
@@ -3088,7 +3117,7 @@ std::string AttConverter::AnchoredTextLogFuncToStr(anchoredTextLog_FUNC data) co
     return value;
 }
 
-anchoredTextLog_FUNC AttConverter::StrToAnchoredTextLogFunc(std::string value, bool logWarning) const
+anchoredTextLog_FUNC AttConverter::StrToAnchoredTextLogFunc(const std::string &value, bool logWarning) const
 {
     if (value == "unknown") return anchoredTextLog_FUNC_unknown;
     if (logWarning && !value.empty())
@@ -3111,7 +3140,7 @@ std::string AttConverter::ArpegLogOrderToStr(arpegLog_ORDER data) const
     return value;
 }
 
-arpegLog_ORDER AttConverter::StrToArpegLogOrder(std::string value, bool logWarning) const
+arpegLog_ORDER AttConverter::StrToArpegLogOrder(const std::string &value, bool logWarning) const
 {
     if (value == "up") return arpegLog_ORDER_up;
     if (value == "down") return arpegLog_ORDER_down;
@@ -3135,7 +3164,7 @@ std::string AttConverter::AudienceAudienceToStr(audience_AUDIENCE data) const
     return value;
 }
 
-audience_AUDIENCE AttConverter::StrToAudienceAudience(std::string value, bool logWarning) const
+audience_AUDIENCE AttConverter::StrToAudienceAudience(const std::string &value, bool logWarning) const
 {
     if (value == "private") return audience_AUDIENCE_private;
     if (value == "public") return audience_AUDIENCE_public;
@@ -3158,7 +3187,7 @@ std::string AttConverter::BTremLogFormToStr(bTremLog_FORM data) const
     return value;
 }
 
-bTremLog_FORM AttConverter::StrToBTremLogForm(std::string value, bool logWarning) const
+bTremLog_FORM AttConverter::StrToBTremLogForm(const std::string &value, bool logWarning) const
 {
     if (value == "meas") return bTremLog_FORM_meas;
     if (value == "unmeas") return bTremLog_FORM_unmeas;
@@ -3183,7 +3212,7 @@ std::string AttConverter::BeamRendFormToStr(beamRend_FORM data) const
     return value;
 }
 
-beamRend_FORM AttConverter::StrToBeamRendForm(std::string value, bool logWarning) const
+beamRend_FORM AttConverter::StrToBeamRendForm(const std::string &value, bool logWarning) const
 {
     if (value == "acc") return beamRend_FORM_acc;
     if (value == "mixed") return beamRend_FORM_mixed;
@@ -3209,7 +3238,7 @@ std::string AttConverter::BeamingVisBeamrendToStr(beamingVis_BEAMREND data) cons
     return value;
 }
 
-beamingVis_BEAMREND AttConverter::StrToBeamingVisBeamrend(std::string value, bool logWarning) const
+beamingVis_BEAMREND AttConverter::StrToBeamingVisBeamrend(const std::string &value, bool logWarning) const
 {
     if (value == "acc") return beamingVis_BEAMREND_acc;
     if (value == "rit") return beamingVis_BEAMREND_rit;
@@ -3234,7 +3263,7 @@ std::string AttConverter::BracketSpanLogFuncToStr(bracketSpanLog_FUNC data) cons
     return value;
 }
 
-bracketSpanLog_FUNC AttConverter::StrToBracketSpanLogFunc(std::string value, bool logWarning) const
+bracketSpanLog_FUNC AttConverter::StrToBracketSpanLogFunc(const std::string &value, bool logWarning) const
 {
     if (value == "coloration") return bracketSpanLog_FUNC_coloration;
     if (value == "cross-rhythm") return bracketSpanLog_FUNC_cross_rhythm;
@@ -3259,7 +3288,7 @@ std::string AttConverter::CurvatureCurvedirToStr(curvature_CURVEDIR data) const
     return value;
 }
 
-curvature_CURVEDIR AttConverter::StrToCurvatureCurvedir(std::string value, bool logWarning) const
+curvature_CURVEDIR AttConverter::StrToCurvatureCurvedir(const std::string &value, bool logWarning) const
 {
     if (value == "above") return curvature_CURVEDIR_above;
     if (value == "below") return curvature_CURVEDIR_below;
@@ -3282,7 +3311,7 @@ std::string AttConverter::CurveLogFuncToStr(curveLog_FUNC data) const
     return value;
 }
 
-curveLog_FUNC AttConverter::StrToCurveLogFunc(std::string value, bool logWarning) const
+curveLog_FUNC AttConverter::StrToCurveLogFunc(const std::string &value, bool logWarning) const
 {
     if (value == "unknown") return curveLog_FUNC_unknown;
     if (logWarning && !value.empty())
@@ -3303,7 +3332,7 @@ std::string AttConverter::CutoutCutoutToStr(cutout_CUTOUT data) const
     return value;
 }
 
-cutout_CUTOUT AttConverter::StrToCutoutCutout(std::string value, bool logWarning) const
+cutout_CUTOUT AttConverter::StrToCutoutCutout(const std::string &value, bool logWarning) const
 {
     if (value == "cutout") return cutout_CUTOUT_cutout;
     if (logWarning && !value.empty())
@@ -3325,7 +3354,7 @@ std::string AttConverter::DotLogFormToStr(dotLog_FORM data) const
     return value;
 }
 
-dotLog_FORM AttConverter::StrToDotLogForm(std::string value, bool logWarning) const
+dotLog_FORM AttConverter::StrToDotLogForm(const std::string &value, bool logWarning) const
 {
     if (value == "aug") return dotLog_FORM_aug;
     if (value == "div") return dotLog_FORM_div;
@@ -3349,7 +3378,7 @@ std::string AttConverter::EndingsEndingrendToStr(endings_ENDINGREND data) const
     return value;
 }
 
-endings_ENDINGREND AttConverter::StrToEndingsEndingrend(std::string value, bool logWarning) const
+endings_ENDINGREND AttConverter::StrToEndingsEndingrend(const std::string &value, bool logWarning) const
 {
     if (value == "top") return endings_ENDINGREND_top;
     if (value == "barred") return endings_ENDINGREND_barred;
@@ -3373,7 +3402,7 @@ std::string AttConverter::EpisemaVisFormToStr(episemaVis_FORM data) const
     return value;
 }
 
-episemaVis_FORM AttConverter::StrToEpisemaVisForm(std::string value, bool logWarning) const
+episemaVis_FORM AttConverter::StrToEpisemaVisForm(const std::string &value, bool logWarning) const
 {
     if (value == "h") return episemaVis_FORM_h;
     if (value == "v") return episemaVis_FORM_v;
@@ -3397,7 +3426,7 @@ std::string AttConverter::EvidenceEvidenceToStr(evidence_EVIDENCE data) const
     return value;
 }
 
-evidence_EVIDENCE AttConverter::StrToEvidenceEvidence(std::string value, bool logWarning) const
+evidence_EVIDENCE AttConverter::StrToEvidenceEvidence(const std::string &value, bool logWarning) const
 {
     if (value == "internal") return evidence_EVIDENCE_internal;
     if (value == "external") return evidence_EVIDENCE_external;
@@ -3420,7 +3449,7 @@ std::string AttConverter::ExtSymGlyphauthToStr(extSym_GLYPHAUTH data) const
     return value;
 }
 
-extSym_GLYPHAUTH AttConverter::StrToExtSymGlyphauth(std::string value, bool logWarning) const
+extSym_GLYPHAUTH AttConverter::StrToExtSymGlyphauth(const std::string &value, bool logWarning) const
 {
     if (value == "smufl") return extSym_GLYPHAUTH_smufl;
     if (logWarning && !value.empty())
@@ -3442,7 +3471,7 @@ std::string AttConverter::FTremLogFormToStr(fTremLog_FORM data) const
     return value;
 }
 
-fTremLog_FORM AttConverter::StrToFTremLogForm(std::string value, bool logWarning) const
+fTremLog_FORM AttConverter::StrToFTremLogForm(const std::string &value, bool logWarning) const
 {
     if (value == "meas") return fTremLog_FORM_meas;
     if (value == "unmeas") return fTremLog_FORM_unmeas;
@@ -3465,7 +3494,7 @@ std::string AttConverter::FermataVisFormToStr(fermataVis_FORM data) const
     return value;
 }
 
-fermataVis_FORM AttConverter::StrToFermataVisForm(std::string value, bool logWarning) const
+fermataVis_FORM AttConverter::StrToFermataVisForm(const std::string &value, bool logWarning) const
 {
     if (value == "inv") return fermataVis_FORM_inv;
     if (value == "norm") return fermataVis_FORM_norm;
@@ -3489,7 +3518,7 @@ std::string AttConverter::FermataVisShapeToStr(fermataVis_SHAPE data) const
     return value;
 }
 
-fermataVis_SHAPE AttConverter::StrToFermataVisShape(std::string value, bool logWarning) const
+fermataVis_SHAPE AttConverter::StrToFermataVisShape(const std::string &value, bool logWarning) const
 {
     if (value == "curved") return fermataVis_SHAPE_curved;
     if (value == "square") return fermataVis_SHAPE_square;
@@ -3514,7 +3543,7 @@ std::string AttConverter::FingGrpLogFormToStr(fingGrpLog_FORM data) const
     return value;
 }
 
-fingGrpLog_FORM AttConverter::StrToFingGrpLogForm(std::string value, bool logWarning) const
+fingGrpLog_FORM AttConverter::StrToFingGrpLogForm(const std::string &value, bool logWarning) const
 {
     if (value == "alter") return fingGrpLog_FORM_alter;
     if (value == "combi") return fingGrpLog_FORM_combi;
@@ -3538,7 +3567,7 @@ std::string AttConverter::FingGrpVisOrientToStr(fingGrpVis_ORIENT data) const
     return value;
 }
 
-fingGrpVis_ORIENT AttConverter::StrToFingGrpVisOrient(std::string value, bool logWarning) const
+fingGrpVis_ORIENT AttConverter::StrToFingGrpVisOrient(const std::string &value, bool logWarning) const
 {
     if (value == "horiz") return fingGrpVis_ORIENT_horiz;
     if (value == "vert") return fingGrpVis_ORIENT_vert;
@@ -3562,7 +3591,7 @@ std::string AttConverter::GraceGrpLogAttachToStr(graceGrpLog_ATTACH data) const
     return value;
 }
 
-graceGrpLog_ATTACH AttConverter::StrToGraceGrpLogAttach(std::string value, bool logWarning) const
+graceGrpLog_ATTACH AttConverter::StrToGraceGrpLogAttach(const std::string &value, bool logWarning) const
 {
     if (value == "pre") return graceGrpLog_ATTACH_pre;
     if (value == "post") return graceGrpLog_ATTACH_post;
@@ -3586,7 +3615,7 @@ std::string AttConverter::HairpinLogFormToStr(hairpinLog_FORM data) const
     return value;
 }
 
-hairpinLog_FORM AttConverter::StrToHairpinLogForm(std::string value, bool logWarning) const
+hairpinLog_FORM AttConverter::StrToHairpinLogForm(const std::string &value, bool logWarning) const
 {
     if (value == "cres") return hairpinLog_FORM_cres;
     if (value == "dim") return hairpinLog_FORM_dim;
@@ -3609,7 +3638,7 @@ std::string AttConverter::HarmAnlFormToStr(harmAnl_FORM data) const
     return value;
 }
 
-harmAnl_FORM AttConverter::StrToHarmAnlForm(std::string value, bool logWarning) const
+harmAnl_FORM AttConverter::StrToHarmAnlForm(const std::string &value, bool logWarning) const
 {
     if (value == "explicit") return harmAnl_FORM_explicit;
     if (value == "implied") return harmAnl_FORM_implied;
@@ -3633,7 +3662,7 @@ std::string AttConverter::HarmVisRendgridToStr(harmVis_RENDGRID data) const
     return value;
 }
 
-harmVis_RENDGRID AttConverter::StrToHarmVisRendgrid(std::string value, bool logWarning) const
+harmVis_RENDGRID AttConverter::StrToHarmVisRendgrid(const std::string &value, bool logWarning) const
 {
     if (value == "grid") return harmVis_RENDGRID_grid;
     if (value == "gridtext") return harmVis_RENDGRID_gridtext;
@@ -3658,7 +3687,7 @@ std::string AttConverter::HarpPedalLogAToStr(harpPedalLog_A data) const
     return value;
 }
 
-harpPedalLog_A AttConverter::StrToHarpPedalLogA(std::string value, bool logWarning) const
+harpPedalLog_A AttConverter::StrToHarpPedalLogA(const std::string &value, bool logWarning) const
 {
     if (value == "f") return harpPedalLog_A_f;
     if (value == "n") return harpPedalLog_A_n;
@@ -3683,7 +3712,7 @@ std::string AttConverter::HarpPedalLogBToStr(harpPedalLog_B data) const
     return value;
 }
 
-harpPedalLog_B AttConverter::StrToHarpPedalLogB(std::string value, bool logWarning) const
+harpPedalLog_B AttConverter::StrToHarpPedalLogB(const std::string &value, bool logWarning) const
 {
     if (value == "f") return harpPedalLog_B_f;
     if (value == "n") return harpPedalLog_B_n;
@@ -3708,7 +3737,7 @@ std::string AttConverter::HarpPedalLogCToStr(harpPedalLog_C data) const
     return value;
 }
 
-harpPedalLog_C AttConverter::StrToHarpPedalLogC(std::string value, bool logWarning) const
+harpPedalLog_C AttConverter::StrToHarpPedalLogC(const std::string &value, bool logWarning) const
 {
     if (value == "f") return harpPedalLog_C_f;
     if (value == "n") return harpPedalLog_C_n;
@@ -3733,7 +3762,7 @@ std::string AttConverter::HarpPedalLogDToStr(harpPedalLog_D data) const
     return value;
 }
 
-harpPedalLog_D AttConverter::StrToHarpPedalLogD(std::string value, bool logWarning) const
+harpPedalLog_D AttConverter::StrToHarpPedalLogD(const std::string &value, bool logWarning) const
 {
     if (value == "f") return harpPedalLog_D_f;
     if (value == "n") return harpPedalLog_D_n;
@@ -3758,7 +3787,7 @@ std::string AttConverter::HarpPedalLogEToStr(harpPedalLog_E data) const
     return value;
 }
 
-harpPedalLog_E AttConverter::StrToHarpPedalLogE(std::string value, bool logWarning) const
+harpPedalLog_E AttConverter::StrToHarpPedalLogE(const std::string &value, bool logWarning) const
 {
     if (value == "f") return harpPedalLog_E_f;
     if (value == "n") return harpPedalLog_E_n;
@@ -3783,7 +3812,7 @@ std::string AttConverter::HarpPedalLogFToStr(harpPedalLog_F data) const
     return value;
 }
 
-harpPedalLog_F AttConverter::StrToHarpPedalLogF(std::string value, bool logWarning) const
+harpPedalLog_F AttConverter::StrToHarpPedalLogF(const std::string &value, bool logWarning) const
 {
     if (value == "f") return harpPedalLog_F_f;
     if (value == "n") return harpPedalLog_F_n;
@@ -3808,7 +3837,7 @@ std::string AttConverter::HarpPedalLogGToStr(harpPedalLog_G data) const
     return value;
 }
 
-harpPedalLog_G AttConverter::StrToHarpPedalLogG(std::string value, bool logWarning) const
+harpPedalLog_G AttConverter::StrToHarpPedalLogG(const std::string &value, bool logWarning) const
 {
     if (value == "f") return harpPedalLog_G_f;
     if (value == "n") return harpPedalLog_G_n;
@@ -3833,7 +3862,7 @@ std::string AttConverter::LineLogFuncToStr(lineLog_FUNC data) const
     return value;
 }
 
-lineLog_FUNC AttConverter::StrToLineLogFunc(std::string value, bool logWarning) const
+lineLog_FUNC AttConverter::StrToLineLogFunc(const std::string &value, bool logWarning) const
 {
     if (value == "coloration") return lineLog_FUNC_coloration;
     if (value == "ligature") return lineLog_FUNC_ligature;
@@ -3857,7 +3886,7 @@ std::string AttConverter::LiquescentVisCurveToStr(liquescentVis_CURVE data) cons
     return value;
 }
 
-liquescentVis_CURVE AttConverter::StrToLiquescentVisCurve(std::string value, bool logWarning) const
+liquescentVis_CURVE AttConverter::StrToLiquescentVisCurve(const std::string &value, bool logWarning) const
 {
     if (value == "a") return liquescentVis_CURVE_a;
     if (value == "c") return liquescentVis_CURVE_c;
@@ -3895,7 +3924,7 @@ std::string AttConverter::MeasurementUnitToStr(measurement_UNIT data) const
     return value;
 }
 
-measurement_UNIT AttConverter::StrToMeasurementUnit(std::string value, bool logWarning) const
+measurement_UNIT AttConverter::StrToMeasurementUnit(const std::string &value, bool logWarning) const
 {
     if (value == "byte") return measurement_UNIT_byte;
     if (value == "char") return measurement_UNIT_char;
@@ -3924,6 +3953,7 @@ std::string AttConverter::MeiVersionMeiversionToStr(meiVersion_MEIVERSION data) 
     std::string value;
     switch (data) {
         case meiVersion_MEIVERSION_4_0_0: value = "4.0.0"; break;
+        case meiVersion_MEIVERSION_4_0_1: value = "4.0.1"; break;
         default:
             LogWarning("Unknown value '%d' for att.meiVersion@meiversion", data);
             value = "";
@@ -3932,9 +3962,10 @@ std::string AttConverter::MeiVersionMeiversionToStr(meiVersion_MEIVERSION data) 
     return value;
 }
 
-meiVersion_MEIVERSION AttConverter::StrToMeiVersionMeiversion(std::string value, bool logWarning) const
+meiVersion_MEIVERSION AttConverter::StrToMeiVersionMeiversion(const std::string &value, bool logWarning) const
 {
     if (value == "4.0.0") return meiVersion_MEIVERSION_4_0_0;
+    if (value == "4.0.1") return meiVersion_MEIVERSION_4_0_1;
     if (logWarning && !value.empty())
         LogWarning("Unsupported value '%s' for att.meiVersion@meiversion", value.c_str());
     return meiVersion_MEIVERSION_NONE;
@@ -3954,7 +3985,7 @@ std::string AttConverter::MensurVisFormToStr(mensurVis_FORM data) const
     return value;
 }
 
-mensurVis_FORM AttConverter::StrToMensurVisForm(std::string value, bool logWarning) const
+mensurVis_FORM AttConverter::StrToMensurVisForm(const std::string &value, bool logWarning) const
 {
     if (value == "horizontal") return mensurVis_FORM_horizontal;
     if (value == "vertical") return mensurVis_FORM_vertical;
@@ -3977,7 +4008,7 @@ std::string AttConverter::MensuralVisMensurformToStr(mensuralVis_MENSURFORM data
     return value;
 }
 
-mensuralVis_MENSURFORM AttConverter::StrToMensuralVisMensurform(std::string value, bool logWarning) const
+mensuralVis_MENSURFORM AttConverter::StrToMensuralVisMensurform(const std::string &value, bool logWarning) const
 {
     if (value == "horizontal") return mensuralVis_MENSURFORM_horizontal;
     if (value == "vertical") return mensuralVis_MENSURFORM_vertical;
@@ -4001,7 +4032,7 @@ std::string AttConverter::MeterConformanceMetconToStr(meterConformance_METCON da
     return value;
 }
 
-meterConformance_METCON AttConverter::StrToMeterConformanceMetcon(std::string value, bool logWarning) const
+meterConformance_METCON AttConverter::StrToMeterConformanceMetcon(const std::string &value, bool logWarning) const
 {
     if (value == "c") return meterConformance_METCON_c;
     if (value == "i") return meterConformance_METCON_i;
@@ -4009,60 +4040,6 @@ meterConformance_METCON AttConverter::StrToMeterConformanceMetcon(std::string va
     if (logWarning && !value.empty())
         LogWarning("Unsupported value '%s' for att.meterConformance@metcon", value.c_str());
     return meterConformance_METCON_NONE;
-}
-
-std::string AttConverter::MeterSigVisFormToStr(meterSigVis_FORM data) const
-{
-    std::string value;
-    switch (data) {
-        case meterSigVis_FORM_num: value = "num"; break;
-        case meterSigVis_FORM_denomsym: value = "denomsym"; break;
-        case meterSigVis_FORM_norm: value = "norm"; break;
-        case meterSigVis_FORM_invis: value = "invis"; break;
-        default:
-            LogWarning("Unknown value '%d' for att.meterSig.vis@form", data);
-            value = "";
-            break;
-    }
-    return value;
-}
-
-meterSigVis_FORM AttConverter::StrToMeterSigVisForm(std::string value, bool logWarning) const
-{
-    if (value == "num") return meterSigVis_FORM_num;
-    if (value == "denomsym") return meterSigVis_FORM_denomsym;
-    if (value == "norm") return meterSigVis_FORM_norm;
-    if (value == "invis") return meterSigVis_FORM_invis;
-    if (logWarning && !value.empty())
-        LogWarning("Unsupported value '%s' for att.meterSig.vis@form", value.c_str());
-    return meterSigVis_FORM_NONE;
-}
-
-std::string AttConverter::MeterSigDefaultVisMeterformToStr(meterSigDefaultVis_METERFORM data) const
-{
-    std::string value;
-    switch (data) {
-        case meterSigDefaultVis_METERFORM_num: value = "num"; break;
-        case meterSigDefaultVis_METERFORM_denomsym: value = "denomsym"; break;
-        case meterSigDefaultVis_METERFORM_norm: value = "norm"; break;
-        case meterSigDefaultVis_METERFORM_invis: value = "invis"; break;
-        default:
-            LogWarning("Unknown value '%d' for att.meterSigDefault.vis@meter.form", data);
-            value = "";
-            break;
-    }
-    return value;
-}
-
-meterSigDefaultVis_METERFORM AttConverter::StrToMeterSigDefaultVisMeterform(std::string value, bool logWarning) const
-{
-    if (value == "num") return meterSigDefaultVis_METERFORM_num;
-    if (value == "denomsym") return meterSigDefaultVis_METERFORM_denomsym;
-    if (value == "norm") return meterSigDefaultVis_METERFORM_norm;
-    if (value == "invis") return meterSigDefaultVis_METERFORM_invis;
-    if (logWarning && !value.empty())
-        LogWarning("Unsupported value '%s' for att.meterSigDefault.vis@meter.form", value.c_str());
-    return meterSigDefaultVis_METERFORM_NONE;
 }
 
 std::string AttConverter::MeterSigGrpLogFuncToStr(meterSigGrpLog_FUNC data) const
@@ -4080,7 +4057,7 @@ std::string AttConverter::MeterSigGrpLogFuncToStr(meterSigGrpLog_FUNC data) cons
     return value;
 }
 
-meterSigGrpLog_FUNC AttConverter::StrToMeterSigGrpLogFunc(std::string value, bool logWarning) const
+meterSigGrpLog_FUNC AttConverter::StrToMeterSigGrpLogFunc(const std::string &value, bool logWarning) const
 {
     if (value == "alternating") return meterSigGrpLog_FUNC_alternating;
     if (value == "interchanging") return meterSigGrpLog_FUNC_interchanging;
@@ -4104,7 +4081,7 @@ std::string AttConverter::MordentLogFormToStr(mordentLog_FORM data) const
     return value;
 }
 
-mordentLog_FORM AttConverter::StrToMordentLogForm(std::string value, bool logWarning) const
+mordentLog_FORM AttConverter::StrToMordentLogForm(const std::string &value, bool logWarning) const
 {
     if (value == "lower") return mordentLog_FORM_lower;
     if (value == "upper") return mordentLog_FORM_upper;
@@ -4128,7 +4105,7 @@ std::string AttConverter::NcFormConToStr(ncForm_CON data) const
     return value;
 }
 
-ncForm_CON AttConverter::StrToNcFormCon(std::string value, bool logWarning) const
+ncForm_CON AttConverter::StrToNcFormCon(const std::string &value, bool logWarning) const
 {
     if (value == "g") return ncForm_CON_g;
     if (value == "l") return ncForm_CON_l;
@@ -4152,7 +4129,7 @@ std::string AttConverter::NcFormCurveToStr(ncForm_CURVE data) const
     return value;
 }
 
-ncForm_CURVE AttConverter::StrToNcFormCurve(std::string value, bool logWarning) const
+ncForm_CURVE AttConverter::StrToNcFormCurve(const std::string &value, bool logWarning) const
 {
     if (value == "a") return ncForm_CURVE_a;
     if (value == "c") return ncForm_CURVE_c;
@@ -4175,7 +4152,7 @@ std::string AttConverter::NcFormRellenToStr(ncForm_RELLEN data) const
     return value;
 }
 
-ncForm_RELLEN AttConverter::StrToNcFormRellen(std::string value, bool logWarning) const
+ncForm_RELLEN AttConverter::StrToNcFormRellen(const std::string &value, bool logWarning) const
 {
     if (value == "l") return ncForm_RELLEN_l;
     if (value == "s") return ncForm_RELLEN_s;
@@ -4198,7 +4175,7 @@ std::string AttConverter::NoteAnlMensuralLigToStr(noteAnlMensural_LIG data) cons
     return value;
 }
 
-noteAnlMensural_LIG AttConverter::StrToNoteAnlMensuralLig(std::string value, bool logWarning) const
+noteAnlMensural_LIG AttConverter::StrToNoteAnlMensuralLig(const std::string &value, bool logWarning) const
 {
     if (value == "recta") return noteAnlMensural_LIG_recta;
     if (value == "obliqua") return noteAnlMensural_LIG_obliqua;
@@ -4221,7 +4198,7 @@ std::string AttConverter::NoteGesExtremisToStr(noteGes_EXTREMIS data) const
     return value;
 }
 
-noteGes_EXTREMIS AttConverter::StrToNoteGesExtremis(std::string value, bool logWarning) const
+noteGes_EXTREMIS AttConverter::StrToNoteGesExtremis(const std::string &value, bool logWarning) const
 {
     if (value == "highest") return noteGes_EXTREMIS_highest;
     if (value == "lowest") return noteGes_EXTREMIS_lowest;
@@ -4243,7 +4220,7 @@ std::string AttConverter::NoteHeadsHeadauthToStr(noteHeads_HEADAUTH data) const
     return value;
 }
 
-noteHeads_HEADAUTH AttConverter::StrToNoteHeadsHeadauth(std::string value, bool logWarning) const
+noteHeads_HEADAUTH AttConverter::StrToNoteHeadsHeadauth(const std::string &value, bool logWarning) const
 {
     if (value == "smufl") return noteHeads_HEADAUTH_smufl;
     if (logWarning && !value.empty())
@@ -4264,7 +4241,7 @@ std::string AttConverter::OctaveLogCollToStr(octaveLog_COLL data) const
     return value;
 }
 
-octaveLog_COLL AttConverter::StrToOctaveLogColl(std::string value, bool logWarning) const
+octaveLog_COLL AttConverter::StrToOctaveLogColl(const std::string &value, bool logWarning) const
 {
     if (value == "coll") return octaveLog_COLL_coll;
     if (logWarning && !value.empty())
@@ -4286,7 +4263,7 @@ std::string AttConverter::PbVisFoliumToStr(pbVis_FOLIUM data) const
     return value;
 }
 
-pbVis_FOLIUM AttConverter::StrToPbVisFolium(std::string value, bool logWarning) const
+pbVis_FOLIUM AttConverter::StrToPbVisFolium(const std::string &value, bool logWarning) const
 {
     if (value == "verso") return pbVis_FOLIUM_verso;
     if (value == "recto") return pbVis_FOLIUM_recto;
@@ -4311,7 +4288,7 @@ std::string AttConverter::PedalLogDirToStr(pedalLog_DIR data) const
     return value;
 }
 
-pedalLog_DIR AttConverter::StrToPedalLogDir(std::string value, bool logWarning) const
+pedalLog_DIR AttConverter::StrToPedalLogDir(const std::string &value, bool logWarning) const
 {
     if (value == "down") return pedalLog_DIR_down;
     if (value == "up") return pedalLog_DIR_up;
@@ -4338,7 +4315,7 @@ std::string AttConverter::PedalLogFuncToStr(pedalLog_FUNC data) const
     return value;
 }
 
-pedalLog_FUNC AttConverter::StrToPedalLogFunc(std::string value, bool logWarning) const
+pedalLog_FUNC AttConverter::StrToPedalLogFunc(const std::string &value, bool logWarning) const
 {
     if (value == "sustain") return pedalLog_FUNC_sustain;
     if (value == "soft") return pedalLog_FUNC_soft;
@@ -4364,7 +4341,7 @@ std::string AttConverter::PedalVisFormToStr(pedalVis_FORM data) const
     return value;
 }
 
-pedalVis_FORM AttConverter::StrToPedalVisForm(std::string value, bool logWarning) const
+pedalVis_FORM AttConverter::StrToPedalVisForm(const std::string &value, bool logWarning) const
 {
     if (value == "line") return pedalVis_FORM_line;
     if (value == "pedstar") return pedalVis_FORM_pedstar;
@@ -4389,7 +4366,7 @@ std::string AttConverter::PianoPedalsPedalstyleToStr(pianoPedals_PEDALSTYLE data
     return value;
 }
 
-pianoPedals_PEDALSTYLE AttConverter::StrToPianoPedalsPedalstyle(std::string value, bool logWarning) const
+pianoPedals_PEDALSTYLE AttConverter::StrToPianoPedalsPedalstyle(const std::string &value, bool logWarning) const
 {
     if (value == "line") return pianoPedals_PEDALSTYLE_line;
     if (value == "pedstar") return pianoPedals_PEDALSTYLE_pedstar;
@@ -4415,7 +4392,7 @@ std::string AttConverter::PointingXlinkactuateToStr(pointing_XLINKACTUATE data) 
     return value;
 }
 
-pointing_XLINKACTUATE AttConverter::StrToPointingXlinkactuate(std::string value, bool logWarning) const
+pointing_XLINKACTUATE AttConverter::StrToPointingXlinkactuate(const std::string &value, bool logWarning) const
 {
     if (value == "onLoad") return pointing_XLINKACTUATE_onLoad;
     if (value == "onRequest") return pointing_XLINKACTUATE_onRequest;
@@ -4443,7 +4420,7 @@ std::string AttConverter::PointingXlinkshowToStr(pointing_XLINKSHOW data) const
     return value;
 }
 
-pointing_XLINKSHOW AttConverter::StrToPointingXlinkshow(std::string value, bool logWarning) const
+pointing_XLINKSHOW AttConverter::StrToPointingXlinkshow(const std::string &value, bool logWarning) const
 {
     if (value == "new") return pointing_XLINKSHOW_new;
     if (value == "replace") return pointing_XLINKSHOW_replace;
@@ -4481,7 +4458,7 @@ std::string AttConverter::RecordTypeRecordtypeToStr(recordType_RECORDTYPE data) 
     return value;
 }
 
-recordType_RECORDTYPE AttConverter::StrToRecordTypeRecordtype(std::string value, bool logWarning) const
+recordType_RECORDTYPE AttConverter::StrToRecordTypeRecordtype(const std::string &value, bool logWarning) const
 {
     if (value == "a") return recordType_RECORDTYPE_a;
     if (value == "c") return recordType_RECORDTYPE_c;
@@ -4516,7 +4493,7 @@ std::string AttConverter::RegularMethodMethodToStr(regularMethod_METHOD data) co
     return value;
 }
 
-regularMethod_METHOD AttConverter::StrToRegularMethodMethod(std::string value, bool logWarning) const
+regularMethod_METHOD AttConverter::StrToRegularMethodMethod(const std::string &value, bool logWarning) const
 {
     if (value == "silent") return regularMethod_METHOD_silent;
     if (value == "tags") return regularMethod_METHOD_tags;
@@ -4540,7 +4517,7 @@ std::string AttConverter::RehearsalRehencloseToStr(rehearsal_REHENCLOSE data) co
     return value;
 }
 
-rehearsal_REHENCLOSE AttConverter::StrToRehearsalRehenclose(std::string value, bool logWarning) const
+rehearsal_REHENCLOSE AttConverter::StrToRehearsalRehenclose(const std::string &value, bool logWarning) const
 {
     if (value == "box") return rehearsal_REHENCLOSE_box;
     if (value == "circle") return rehearsal_REHENCLOSE_circle;
@@ -4563,7 +4540,7 @@ std::string AttConverter::SbVisFormToStr(sbVis_FORM data) const
     return value;
 }
 
-sbVis_FORM AttConverter::StrToSbVisForm(std::string value, bool logWarning) const
+sbVis_FORM AttConverter::StrToSbVisForm(const std::string &value, bool logWarning) const
 {
     if (value == "hash") return sbVis_FORM_hash;
     if (logWarning && !value.empty())
@@ -4588,7 +4565,7 @@ std::string AttConverter::StaffGroupingSymSymbolToStr(staffGroupingSym_SYMBOL da
     return value;
 }
 
-staffGroupingSym_SYMBOL AttConverter::StrToStaffGroupingSymSymbol(std::string value, bool logWarning) const
+staffGroupingSym_SYMBOL AttConverter::StrToStaffGroupingSymSymbol(const std::string &value, bool logWarning) const
 {
     if (value == "brace") return staffGroupingSym_SYMBOL_brace;
     if (value == "bracket") return staffGroupingSym_SYMBOL_bracket;
@@ -4620,7 +4597,7 @@ std::string AttConverter::SylLogConToStr(sylLog_CON data) const
     return value;
 }
 
-sylLog_CON AttConverter::StrToSylLogCon(std::string value, bool logWarning) const
+sylLog_CON AttConverter::StrToSylLogCon(const std::string &value, bool logWarning) const
 {
     if (value == "s") return sylLog_CON_s;
     if (value == "d") return sylLog_CON_d;
@@ -4641,6 +4618,7 @@ std::string AttConverter::SylLogWordposToStr(sylLog_WORDPOS data) const
     switch (data) {
         case sylLog_WORDPOS_i: value = "i"; break;
         case sylLog_WORDPOS_m: value = "m"; break;
+        case sylLog_WORDPOS_s: value = "s"; break;
         case sylLog_WORDPOS_t: value = "t"; break;
         default:
             LogWarning("Unknown value '%d' for att.syl.log@wordpos", data);
@@ -4650,10 +4628,11 @@ std::string AttConverter::SylLogWordposToStr(sylLog_WORDPOS data) const
     return value;
 }
 
-sylLog_WORDPOS AttConverter::StrToSylLogWordpos(std::string value, bool logWarning) const
+sylLog_WORDPOS AttConverter::StrToSylLogWordpos(const std::string &value, bool logWarning) const
 {
     if (value == "i") return sylLog_WORDPOS_i;
     if (value == "m") return sylLog_WORDPOS_m;
+    if (value == "s") return sylLog_WORDPOS_s;
     if (value == "t") return sylLog_WORDPOS_t;
     if (logWarning && !value.empty())
         LogWarning("Unsupported value '%s' for att.syl.log@wordpos", value.c_str());
@@ -4675,7 +4654,7 @@ std::string AttConverter::TargetEvalEvaluateToStr(targetEval_EVALUATE data) cons
     return value;
 }
 
-targetEval_EVALUATE AttConverter::StrToTargetEvalEvaluate(std::string value, bool logWarning) const
+targetEval_EVALUATE AttConverter::StrToTargetEvalEvaluate(const std::string &value, bool logWarning) const
 {
     if (value == "all") return targetEval_EVALUATE_all;
     if (value == "one") return targetEval_EVALUATE_one;
@@ -4701,7 +4680,7 @@ std::string AttConverter::TempoLogFuncToStr(tempoLog_FUNC data) const
     return value;
 }
 
-tempoLog_FUNC AttConverter::StrToTempoLogFunc(std::string value, bool logWarning) const
+tempoLog_FUNC AttConverter::StrToTempoLogFunc(const std::string &value, bool logWarning) const
 {
     if (value == "continuous") return tempoLog_FUNC_continuous;
     if (value == "instantaneous") return tempoLog_FUNC_instantaneous;
@@ -4726,7 +4705,7 @@ std::string AttConverter::TupletVisNumformatToStr(tupletVis_NUMFORMAT data) cons
     return value;
 }
 
-tupletVis_NUMFORMAT AttConverter::StrToTupletVisNumformat(std::string value, bool logWarning) const
+tupletVis_NUMFORMAT AttConverter::StrToTupletVisNumformat(const std::string &value, bool logWarning) const
 {
     if (value == "count") return tupletVis_NUMFORMAT_count;
     if (value == "ratio") return tupletVis_NUMFORMAT_ratio;
@@ -4749,7 +4728,7 @@ std::string AttConverter::TurnLogFormToStr(turnLog_FORM data) const
     return value;
 }
 
-turnLog_FORM AttConverter::StrToTurnLogForm(std::string value, bool logWarning) const
+turnLog_FORM AttConverter::StrToTurnLogForm(const std::string &value, bool logWarning) const
 {
     if (value == "lower") return turnLog_FORM_lower;
     if (value == "upper") return turnLog_FORM_upper;
@@ -4775,7 +4754,7 @@ std::string AttConverter::VoltaGroupingSymVoltasymToStr(voltaGroupingSym_VOLTASY
     return value;
 }
 
-voltaGroupingSym_VOLTASYM AttConverter::StrToVoltaGroupingSymVoltasym(std::string value, bool logWarning) const
+voltaGroupingSym_VOLTASYM AttConverter::StrToVoltaGroupingSymVoltasym(const std::string &value, bool logWarning) const
 {
     if (value == "brace") return voltaGroupingSym_VOLTASYM_brace;
     if (value == "bracket") return voltaGroupingSym_VOLTASYM_bracket;
@@ -4801,7 +4780,7 @@ std::string AttConverter::WhitespaceXmlspaceToStr(whitespace_XMLSPACE data) cons
     return value;
 }
 
-whitespace_XMLSPACE AttConverter::StrToWhitespaceXmlspace(std::string value, bool logWarning) const
+whitespace_XMLSPACE AttConverter::StrToWhitespaceXmlspace(const std::string &value, bool logWarning) const
 {
     if (value == "default") return whitespace_XMLSPACE_default;
     if (value == "preserve") return whitespace_XMLSPACE_preserve;

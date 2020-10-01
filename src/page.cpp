@@ -79,8 +79,8 @@ void Page::AddChild(Object *child)
 
 RunningElement *Page::GetHeader() const
 {
-    Doc *doc = dynamic_cast<Doc *>(this->GetFirstParent(DOC));
-    if (!doc || doc->GetOptions()->m_noHeader.GetValue()) {
+    Doc *doc = dynamic_cast<Doc *>(this->GetFirstAncestor(DOC));
+    if (!doc || (doc->GetOptions()->m_header.GetValue() == HEADER_none)) {
         return NULL;
     }
 
@@ -98,8 +98,8 @@ RunningElement *Page::GetHeader() const
 
 RunningElement *Page::GetFooter() const
 {
-    Doc *doc = dynamic_cast<Doc *>(this->GetFirstParent(DOC));
-    if (!doc || doc->GetOptions()->m_noFooter.GetValue()) {
+    Doc *doc = dynamic_cast<Doc *>(this->GetFirstAncestor(DOC));
+    if (!doc || (doc->GetOptions()->m_footer.GetValue() == FOOTER_none)) {
         return NULL;
     }
 
@@ -129,7 +129,7 @@ void Page::LayOut(bool force)
     this->LayOutVertically();
     this->JustifyVertically();
 
-    Doc *doc = dynamic_cast<Doc *>(GetFirstParent(DOC));
+    Doc *doc = dynamic_cast<Doc *>(GetFirstAncestor(DOC));
     assert(doc);
     if (doc->GetOptions()->m_svgBoundingBoxes.GetValue()) {
         View view;
@@ -149,7 +149,7 @@ void Page::LayOutTranscription(bool force)
         return;
     }
 
-    Doc *doc = dynamic_cast<Doc *>(GetFirstParent(DOC));
+    Doc *doc = dynamic_cast<Doc *>(GetFirstAncestor(DOC));
     assert(doc);
 
     // Doc::SetDrawingPage should have been called before
@@ -217,7 +217,7 @@ void Page::LayOutTranscription(bool force)
 
 void Page::LayOutHorizontally()
 {
-    Doc *doc = dynamic_cast<Doc *>(GetFirstParent(DOC));
+    Doc *doc = dynamic_cast<Doc *>(GetFirstAncestor(DOC));
     assert(doc);
 
     // Doc::SetDrawingPage should have been called before
@@ -257,7 +257,7 @@ void Page::LayOutHorizontally()
         if (doc->GetOptions()->m_spacingDurDetection.GetValue()) {
             // Get the longest duration in the piece
             AttDurExtremeComparison durExtremeComparison(LONGEST);
-            Object *longestDur = this->FindChildExtremeByComparison(&durExtremeComparison);
+            Object *longestDur = this->FindDescendantExtremeByComparison(&durExtremeComparison);
             if (longestDur) {
                 DurationInterface *interface = longestDur->GetDurationInterface();
                 assert(interface);
@@ -276,6 +276,12 @@ void Page::LayOutHorizontally()
     SetAlignmentPitchPosParams setAlignmentPitchPosParams(doc);
     Functor setAlignmentPitchPos(&Object::SetAlignmentPitchPos);
     this->Process(&setAlignmentPitchPos, &setAlignmentPitchPosParams);
+
+    if (Att::IsMensuralType(doc->m_notationType)) {
+        FunctorDocParams calcLigatureNotePosParams(doc);
+        Functor calcLigatureNotePos(&Object::CalcLigatureNotePos);
+        this->Process(&calcLigatureNotePos, &calcLigatureNotePosParams);
+    }
 
     CalcStemParams calcStemParams(doc);
     Functor calcStem(&Object::CalcStem);
@@ -362,7 +368,7 @@ void Page::LayOutHorizontally()
 
 void Page::LayOutVertically()
 {
-    Doc *doc = dynamic_cast<Doc *>(GetFirstParent(DOC));
+    Doc *doc = dynamic_cast<Doc *>(GetFirstAncestor(DOC));
     assert(doc);
 
     // Doc::SetDrawingPage should have been called before
@@ -465,7 +471,7 @@ void Page::LayOutVertically()
 
 void Page::JustifyHorizontally()
 {
-    Doc *doc = dynamic_cast<Doc *>(GetFirstParent(DOC));
+    Doc *doc = dynamic_cast<Doc *>(GetFirstAncestor(DOC));
     assert(doc);
 
     if ((doc->GetOptions()->m_breaks.GetValue() == BREAKS_none) || doc->GetOptions()->m_noJustification.GetValue()) {
@@ -475,6 +481,9 @@ void Page::JustifyHorizontally()
     // Doc::SetDrawingPage should have been called before
     // Make sure we have the correct page
     assert(this == doc->GetDrawingPage());
+
+    if ((doc->GetOptions()->m_adjustPageWidth.GetValue()))
+        doc->m_drawingPageWidth = GetContentWidth() + doc->m_drawingPageMarginLeft + doc->m_drawingPageMarginRight;
 
     // Justify X position
     Functor justifyX(&Object::JustifyX);
@@ -486,7 +495,7 @@ void Page::JustifyHorizontally()
 
 void Page::JustifyVertically()
 {
-    Doc *doc = dynamic_cast<Doc *>(GetFirstParent(DOC));
+    Doc *doc = dynamic_cast<Doc *>(GetFirstAncestor(DOC));
     assert(doc);
 
     // Doc::SetDrawingPage should have been called before
@@ -538,7 +547,7 @@ void Page::JustifyVertically()
 
 void Page::LayOutPitchPos()
 {
-    Doc *doc = dynamic_cast<Doc *>(GetFirstParent(DOC));
+    Doc *doc = dynamic_cast<Doc *>(GetFirstAncestor(DOC));
     assert(doc);
 
     // Doc::SetDrawingPage should have been called before
@@ -557,7 +566,7 @@ void Page::LayOutPitchPos()
 
 int Page::GetContentHeight() const
 {
-    Doc *doc = dynamic_cast<Doc *>(GetFirstParent(DOC));
+    Doc *doc = dynamic_cast<Doc *>(GetFirstAncestor(DOC));
     assert(doc);
 
     // Doc::SetDrawingPage should have been called before
@@ -578,7 +587,7 @@ int Page::GetContentHeight() const
 
 int Page::GetContentWidth() const
 {
-    Doc *doc = dynamic_cast<Doc *>(GetFirstParent(DOC));
+    Doc *doc = dynamic_cast<Doc *>(GetFirstAncestor(DOC));
     assert(doc);
     // in non debug
     if (!doc) return 0;
@@ -587,14 +596,19 @@ int Page::GetContentWidth() const
     // Make sure we have the correct page
     assert(this == doc->GetDrawingPage());
 
-    System *first = dynamic_cast<System *>(m_children.front());
-    assert(first);
-
+    int maxWidth = 0;
+    for (auto &child : m_children) {
+        System *system = dynamic_cast<System *>(child);
+        if (system) {
+            // we include the left margin and the right margin
+            int systemWidth = system->m_drawingTotalWidth + system->m_systemLeftMar + system->m_systemRightMar;
+            maxWidth = std::max(systemWidth, maxWidth);
+        }
+    }
     // For avoiding unused variable warning in non debug mode
     doc = NULL;
 
-    // we include the left margin and the right margin
-    return first->m_drawingTotalWidth + first->m_systemLeftMar + first->m_systemRightMar;
+    return maxWidth;
 }
 
 int Page::CalcJustificationStepSize(bool systemsOnly) const

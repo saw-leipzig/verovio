@@ -9,6 +9,7 @@
 #define __VRV_DOC_H__
 
 #include "devicecontextbase.h"
+#include "expansionmap.h"
 #include "facsimile.h"
 #include "options.h"
 #include "scoredef.h"
@@ -76,9 +77,14 @@ public:
     bool GenerateDocumentScoreDef();
 
     /**
+     * Generate a document pgFoot if none is provided
+     */
+    bool GenerateFooter();
+
+    /**
      * Generate a document pgHead from the MEI header if none is provided
      */
-    bool GenerateHeaderAndFooter();
+    bool GenerateHeader();
 
     /**
      * Generate measure numbers from measure attributes
@@ -204,9 +210,9 @@ public:
      * Run trough all the layers and fill the timemap file content.
      */
     bool ExportTimemap(std::string &output);
-    void PrepareJsonTimemap(std::string &output, std::map<int, double> &realTimeToScoreTime,
-        std::map<int, std::vector<std::string> > &realTimeToOnElements,
-        std::map<int, std::vector<std::string> > &realTimeToOffElements, std::map<int, int> &realTimeToTempo);
+    void PrepareJsonTimemap(std::string &output, std::map<double, double> &realTimeToScoreTime,
+        std::map<double, std::vector<std::string> > &realTimeToOnElements,
+        std::map<double, std::vector<std::string> > &realTimeToOffElements, std::map<double, int> &realTimeToTempo);
 
     /**
      * Set the initial scoreDef of each page.
@@ -219,7 +225,7 @@ public:
     /**
      * Optimize the scoreDef once the document is cast-off.
      */
-    void OptimizeScoreDefDoc(bool encoded = false);
+    void OptimizeScoreDefDoc();
 
     /**
      * Prepare the document for drawing.
@@ -233,6 +239,19 @@ public:
      * Starting from a single system, create and fill pages and systems.
      */
     void CastOffDoc();
+
+    /**
+     * Casts off the entire document, using the document's line breaks,
+     * but adding its own page breaks.
+     */
+    void CastOffLineDoc();
+
+    /**
+     * Casts off the entire document, with options for obeying breaks.
+     * @param useSectionBreaks - true to use the section breaks from the document.
+     * @param usePageBreaks - true to use the page breaks from the document.
+     */
+    void CastOffDocBase(bool useSectionBreaks, bool usePageBreaks);
 
     /**
      * Casts off the running elements (headers and footer)
@@ -286,6 +305,16 @@ public:
      * Permanent conversion discard analytical markup and elements will be preserved in the MEI output.
      */
     void ConvertAnalyticalMarkupDoc(bool permanent = false);
+
+    /**
+     * Transpose the content of the doc.
+     */
+    void TransposeDoc();
+
+    /**
+     * Convert encoded <expansion> before rendering
+     */
+    void ExpandExpansions();
 
     /**
      * To be implemented.
@@ -407,8 +436,14 @@ public:
     /** the current beam maximal slope */
     float m_drawingBeamMaxSlope;
 
-    /** Record notation type for document */
+    /**
+     * Record notation type for document.
+     * (This should be improved by storing a vector of all notation types of the document for cases mixing notations)
+     */
     data_NOTATIONTYPE m_notationType;
+
+    /** An expansion map that contains  */
+    ExpansionMap m_expansionMap;
 
 private:
     /**
@@ -476,7 +511,7 @@ private:
     /**
      * A flag to indicate whereas the document contains analytical markup to be converted.
      * This is currently limited to @fermata and @tie. Other attribute markup (@accid and @artic)
-     * is converted during the import in MeiInput.
+     * is converted during the import in MEIInput.
      */
     bool m_hasAnalyticalMarkup;
 

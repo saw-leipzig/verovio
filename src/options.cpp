@@ -20,10 +20,19 @@
 namespace vrv {
 
 std::map<int, std::string> Option::s_breaks
-    = { { BREAKS_none, "none" }, { BREAKS_auto, "auto" }, { BREAKS_encoded, "encoded" } };
+    = { { BREAKS_none, "none" }, { BREAKS_auto, "auto" }, { BREAKS_line, "line" }, { BREAKS_encoded, "encoded" } };
+
+std::map<int, std::string> Option::s_footer
+    = { { FOOTER_none, "none" }, { FOOTER_auto, "auto" }, { FOOTER_encoded, "encoded" } };
+
+std::map<int, std::string> Option::s_header
+    = { { HEADER_none, "none" }, { HEADER_auto, "auto" }, { HEADER_encoded, "encoded" } };
 
 std::map<int, std::string> Option::s_measureNumber
     = { { MEASURENUMBER_system, "system" }, { MEASURENUMBER_interval, "interval" } };
+
+std::map<int, std::string> Option::s_systemDivider
+    = { { SYSTEMDIVIDER_none, "none" }, { SYSTEMDIVIDER_left, "left" }, { SYSTEMDIVIDER_left_right, "left-right" } };
 
 //----------------------------------------------------------------------------
 // Option
@@ -35,7 +44,7 @@ void Option::CopyTo(Option *option)
     assert(false);
 }
 
-void Option::SetInfo(std::string title, std::string description)
+void Option::SetInfo(const std::string &title, const std::string &description)
 {
     m_title = title;
     m_description = description;
@@ -62,7 +71,7 @@ bool Option::SetValueArray(const std::vector<std::string> &values)
     return false;
 }
 
-bool Option::SetValue(std::string value)
+bool Option::SetValue(const std::string &value)
 {
     // If not overriden
     LogError("Unsupported type string for %s", m_key.c_str());
@@ -100,7 +109,7 @@ void OptionBool::Init(bool defaultValue)
     m_defaultValue = defaultValue;
 }
 
-bool OptionBool::SetValue(std::string value)
+bool OptionBool::SetValue(const std::string &value)
 {
     bool b = (value == "true") ? true : false;
     return SetValue(b);
@@ -151,7 +160,7 @@ void OptionDbl::Init(double defaultValue, double minValue, double maxValue)
     m_maxValue = maxValue;
 }
 
-bool OptionDbl::SetValue(std::string value)
+bool OptionDbl::SetValue(const std::string &value)
 {
     return SetValue(atof(value.c_str()));
 }
@@ -207,7 +216,7 @@ bool OptionInt::SetValueDbl(double value)
     return SetValue((int)value);
 }
 
-bool OptionInt::SetValue(std::string value)
+bool OptionInt::SetValue(const std::string &value)
 {
     return SetValue(atoi(value.c_str()));
 }
@@ -254,13 +263,13 @@ void OptionString::CopyTo(Option *option)
     *child = *this;
 }
 
-void OptionString::Init(std::string defaultValue)
+void OptionString::Init(const std::string &defaultValue)
 {
     m_value = defaultValue;
     m_defaultValue = defaultValue;
 }
 
-bool OptionString::SetValue(std::string value)
+bool OptionString::SetValue(const std::string &value)
 {
     m_value = value;
     return true;
@@ -279,8 +288,8 @@ void OptionArray::CopyTo(Option *option)
 
 void OptionArray::Init()
 {
-    m_values.empty();
-    m_defaultValues.empty();
+    m_values.clear();
+    m_defaultValues.clear();
 }
 
 bool OptionArray::SetValueArray(const std::vector<std::string> &values)
@@ -292,7 +301,7 @@ bool OptionArray::SetValueArray(const std::vector<std::string> &values)
     return true;
 }
 
-bool OptionArray::SetValue(std::string value)
+bool OptionArray::SetValue(const std::string &value)
 {
     // Passing a single value to an array option adds it to the values and to not replace them
     if (!value.empty()) {
@@ -362,7 +371,7 @@ void OptionIntMap::Init(int defaultValue, std::map<int, std::string> *values)
     m_values = values;
 }
 
-bool OptionIntMap::SetValue(std::string value)
+bool OptionIntMap::SetValue(const std::string &value)
 {
     assert(m_values);
 
@@ -450,7 +459,7 @@ void OptionStaffrel::Init(data_STAFFREL defaultValue)
     m_defaultValue = defaultValue;
 }
 
-bool OptionStaffrel::SetValue(std::string value)
+bool OptionStaffrel::SetValue(const std::string &value)
 {
     Att converter;
     data_STAFFREL staffrel = converter.StrToStaffrel(value);
@@ -485,13 +494,30 @@ Options::Options()
     m_general.SetLabel("Input and page layout options", "1-general");
     m_grps.push_back(&m_general);
 
-    m_adjustPageHeight.SetInfo("Adjust page height", "Crop the page height to the height of the content");
+    m_adjustPageHeight.SetInfo("Adjust page height", "Adjust the page height to the height of the content");
     m_adjustPageHeight.Init(false);
     this->Register(&m_adjustPageHeight, "adjustPageHeight", &m_general);
+
+    m_adjustPageWidth.SetInfo("Adjust page width", "Adjust the page width to the width of the content");
+    m_adjustPageWidth.Init(false);
+    this->Register(&m_adjustPageWidth, "adjustPageWidth", &m_general);
 
     m_breaks.SetInfo("Breaks", "Define page and system breaks layout");
     m_breaks.Init(BREAKS_auto, &Option::s_breaks);
     this->Register(&m_breaks, "breaks", &m_general);
+
+    m_condenseEncoded.SetInfo("Condense encoded", "Condense encoded layout rendering");
+    m_condenseEncoded.Init(false);
+    this->Register(&m_condenseEncoded, "condenseEncoded", &m_general);
+
+    m_condenseFirstPage.SetInfo("Condense first page", "When condensing a score also condense the first page");
+    m_condenseFirstPage.Init(false);
+    this->Register(&m_condenseFirstPage, "condenseFirstPage", &m_general);
+
+    m_condenseTempoPages.SetInfo(
+        "Condense tempo pages", "When condensing a score also condense pages with a tempo change");
+    m_condenseTempoPages.Init(false);
+    this->Register(&m_condenseTempoPages, "condenseTempoPages", &m_general);
 
     m_evenNoteSpacing.SetInfo("Even note spacing", "Specify the linear spacing factor");
     m_evenNoteSpacing.Init(false);
@@ -534,13 +560,13 @@ Options::Options()
     m_mmOutput.Init(false);
     this->Register(&m_mmOutput, "mmOutput", &m_general);
 
-    m_noFooter.SetInfo("No footer", "Do not add any footer");
-    m_noFooter.Init(false);
-    this->Register(&m_noFooter, "noFooter", &m_general);
+    m_footer.SetInfo("Footer", "Control footer layout");
+    m_footer.Init(FOOTER_auto, &Option::s_footer);
+    this->Register(&m_footer, "footer", &m_general);
 
-    m_noHeader.SetInfo("No header", "Do not add any header");
-    m_noHeader.Init(false);
-    this->Register(&m_noHeader, "noHeader", &m_general);
+    m_header.SetInfo("Header", "Control header layout");
+    m_header.Init(HEADER_auto, &Option::s_header);
+    this->Register(&m_header, "header", &m_general);
 
     m_noJustification.SetInfo("No justification", "Do not justify the system");
     m_noJustification.Init(false);
@@ -549,6 +575,11 @@ Options::Options()
     m_openControlEvents.SetInfo("Open control event", "Render open control events");
     m_openControlEvents.Init(false);
     this->Register(&m_openControlEvents, "openControlEvents", &m_general);
+
+    m_outputSmuflXmlEntities.SetInfo(
+        "Output SMuFL XML entities", "Output SMuFL charachters as XML entities instead of byte codes");
+    m_outputSmuflXmlEntities.Init(false);
+    this->Register(&m_outputSmuflXmlEntities, "outputSmuflXmlEntities", &m_general);
 
     m_pageHeight.SetInfo("Page height", "The page height");
     m_pageHeight.Init(2970, 100, 60000, true);
@@ -574,6 +605,10 @@ Options::Options()
     m_pageWidth.Init(2100, 100, 60000, true);
     this->Register(&m_pageWidth, "pageWidth", &m_general);
 
+    m_expand.SetInfo("Expand expansion", "Expand all referenced elements in the expansion <xml:id>");
+    m_expand.Init("");
+    this->Register(&m_expand, "expand", &m_general);
+
     m_svgBoundingBoxes.SetInfo("Svg bounding boxes viewbox on svg root", "Include bounding boxes in SVG output");
     m_svgBoundingBoxes.Init(false);
     this->Register(&m_svgBoundingBoxes, "svgBoundingBoxes", &m_general);
@@ -581,6 +616,11 @@ Options::Options()
     m_svgViewBox.SetInfo("Use viewbox on svg root", "Use viewBox on svg root element for easy scaling of document");
     m_svgViewBox.Init(false);
     this->Register(&m_svgViewBox, "svgViewBox", &m_general);
+
+    m_svgHtml5.SetInfo("Output SVG for HTML5 embedding",
+        "Write data-id and data-class attributes for JS usage and id clash avoidance.");
+    m_svgHtml5.Init(false);
+    this->Register(&m_svgHtml5, "svgHtml5", &m_general);
 
     m_unit.SetInfo("Unit", "The MEI unit (1⁄2 of the distance between the staff lines)");
     m_unit.Init(9, 6, 20, true);
@@ -636,17 +676,13 @@ Options::Options()
     m_hairpinSize.Init(3.0, 1.0, 8.0);
     this->Register(&m_hairpinSize, "hairpinSize", &m_generalLayout);
 
-    m_leftPosition.SetInfo("Left position", "The left position");
-    m_leftPosition.Init(0.8, 0.0, 2.0);
-    this->Register(&m_leftPosition, "leftPosition", &m_generalLayout);
-
     m_lyricHyphenLength.SetInfo("Lyric hyphen length", "The lyric hyphen and dash length");
     m_lyricHyphenLength.Init(1.20, 0.50, 3.00);
     this->Register(&m_lyricHyphenLength, "lyricHyphenLength", &m_generalLayout);
 
-    m_lyricHyphenWidth.SetInfo("Lyric hyphen width", "The lyric hyphen and dash width");
-    m_lyricHyphenWidth.Init(0.20, 0.10, 0.50);
-    this->Register(&m_lyricHyphenWidth, "lyricHyphenWidth", &m_generalLayout);
+    m_lyricLineThickness.SetInfo("Lyric line thickness", "The lyric extender line thickness");
+    m_lyricLineThickness.Init(0.25, 0.10, 0.50);
+    this->Register(&m_lyricLineThickness, "lyricLineThickness", &m_generalLayout);
 
     m_lyricNoStartHyphen.SetInfo("Lyric no start hyphen", "Do not show hyphens at the beginning of a system");
     m_lyricNoStartHyphen.Init(false);
@@ -729,13 +765,17 @@ Options::Options()
     m_stemWidth.Init(0.20, 0.10, 0.50);
     this->Register(&m_stemWidth, "stemWidth", &m_generalLayout);
 
+    m_systemDivider.SetInfo("System divider", "The display of system dividers");
+    m_systemDivider.Init(SYSTEMDIVIDER_left, &Option::s_systemDivider);
+    this->Register(&m_systemDivider, "systemDivider", &m_generalLayout);
+
     m_tieThickness.SetInfo("Tie thickness", "The tie thickness in MEI units");
     m_tieThickness.Init(0.5, 0.2, 1.0);
     this->Register(&m_tieThickness, "tieThickness", &m_generalLayout);
 
     /********* selectors *********/
 
-    m_selectors.SetLabel("Element selectors", "3-selectors");
+    m_selectors.SetLabel("Element selectors and processing", "3-selectors");
     m_grps.push_back(&m_selectors);
 
     m_appXPathQuery.SetInfo("App xPath query",
@@ -761,6 +801,15 @@ Options::Options()
         "example: \"./del\"; by default the first child is selected");
     m_substXPathQuery.Init();
     this->Register(&m_substXPathQuery, "substXPathQuery", &m_selectors);
+
+    m_transpose.SetInfo("Transpose the content", "SUMMARY");
+    m_transpose.Init("");
+    this->Register(&m_transpose, "transpose", &m_selectors);
+
+    m_transposeSelectedOnly.SetInfo(
+        "Transpose selected only", "Transpose only the selected content and ignore unselected editorial content");
+    m_transposeSelectedOnly.Init(false);
+    this->Register(&m_transposeSelectedOnly, "transposeSelectedOnly", &m_selectors);
 
     /********* The layout left margin by element *********/
 
@@ -966,7 +1015,7 @@ Options &Options::operator=(const Options &options)
 
 Options::~Options() {}
 
-void Options::Register(Option *option, std::string key, OptionGrp *grp)
+void Options::Register(Option *option, const std::string &key, OptionGrp *grp)
 {
     assert(option);
     assert(grp);

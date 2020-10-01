@@ -7,25 +7,21 @@ See it running in the [MEI Viewer](http://www.verovio.org/mei-viewer.xhtml) and 
 ## Usage
 
 ```javascript
-var verovio = require('verovio');
+var verovio = require( 'verovio' );
+var fs = require( 'fs' );
 
-var vrvToolkit = new verovio.toolkit();
-
-mei = fs.readFileSync("hello.mei");
-
-vrvToolkit.loadData(mei.toString());
-
-svg = vrvToolkit.renderPage(1, {});
-
-fs.writeFileSync("hello.svg", svg);
+/* Wait for verovio to load */
+verovio.module.onRuntimeInitialized = function ()
+{
+    /* create the toolkit instance */
+    var vrvToolkit = new verovio.toolkit();
+    /* read the MEI file */
+	mei = fs.readFileSync("hello.mei");
+    /* load the MEI data as string into the toolkit */
+	vrvToolkit.loadData(mei.toString());
+    /* render the fist page as SVG */
+	svg = vrvToolkit.renderToSVG(1, {});
+    /* save the SVG into a file */
+	fs.writeFileSync("hello.svg", svg);
+}
 ```
-
-### Memory allocation
-
-The memory available for Verovio can be increased during import by passing a MB value to the `init` function.
-
-```javascript
-var verovio = require('verovio').init(512);
-```
-
-The value has to be less than 1024MB.
